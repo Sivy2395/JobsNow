@@ -7,9 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>-->
 
-        <item name="colorPrimary">#CCAD63</item>
-        <item name="colorPrimaryDark">#C5A04B</item>
-        <item name="colorAccent">#BCA33A</item>
+        <!--<item name="colorPrimary">#CCAD63</item>-->
+        <!--<item name="colorPrimaryDark">#C5A04B</item>-->
+        <!--<item name="colorAccent">#BCA33A</item>-->
+
+        <item name="colorPrimary">#990099</item>
+        <item name="colorPrimaryDark">#990099</item>
+        <item name="colorAccent">#990099</item>
+
 
     </style>
 
