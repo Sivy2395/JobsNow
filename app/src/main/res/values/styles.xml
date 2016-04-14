@@ -12,8 +12,8 @@
         <!--<item name="colorAccent">#BCA33A</item>-->
 
         <item name="colorPrimary">#990099</item>
-        <item name="colorPrimaryDark">#990099</item>
-        <item name="colorAccent">#990099</item>
+        <item name="colorPrimaryDark">#660066</item>
+        <item name="colorAccent">#E600E6</item>
 
 
     </style>
