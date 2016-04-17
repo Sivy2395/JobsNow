@@ -23,7 +23,7 @@ android:layout_height="wrap_content">
     </TextView>
 
     <TextView
-        android:id="@+id/media_info"
+        android:id="@+id/media_ID"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/icon"

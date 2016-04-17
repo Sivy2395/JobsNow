@@ -57,6 +57,8 @@
             <ListView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/contactlistview"
                 android:layout_gravity="center"
+                android:descendantFocusability="beforeDescendants"
+                android:windowSoftInputMode="adjustResize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

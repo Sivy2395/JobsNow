@@ -18,6 +18,11 @@ import android.widget.ListView;
 import com.test_2.R;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,23 +46,52 @@ public class MainActivity extends AppCompatActivity
         configureRequestListView();
         configureContactListView();
 
+        FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed_dial);
+        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+
+                if (menuItem.getItemId() == R.id.add) {
+
+                    Intent intent = new Intent(getApplicationContext(), AddContactActivity.class);
+                    startActivity(intent);
+
+                }
+                else if (menuItem.getItemId() == R.id.search_nearby) {
+
+                    Intent intent = new Intent(getApplicationContext(), SearchNearbyActivity.class);
+                    startActivity(intent);
+
+                }
+
+                return false;
+            }
+        });
+
     }
 
     private void configureRequestListView() {
 
         final ListView listview = (ListView) findViewById(R.id.requestlistview);
-        String[] values = new String[] { "1", "2", "3",
-                "4", };
+//        String[] values = new String[] { "1", "2", "3",
+//                "4", };
+//
+//        final ArrayList<String> list = new ArrayList<>();
+//        for (int i = 0; i < values.length; ++i) {
+//            list.add(values[i]);
+//        }
 
-        final ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-        MyArrayAdapter adapter = new MyArrayAdapter(this, values, false, R.layout.row_request);
-        adapter.addContact(new Contact("Bill Gates", true));
-        adapter.addContact(new Contact("Muhammad Ali", true));
-        adapter.addContact(new Contact("Charles Darwin", true));
-        adapter.addContact(new Contact("Elvis Presley", true));
+        List<Contact> values = new ArrayList<Contact>();
+        values.add(new Contact("Bill Gates", true));
+        values.add(new Contact("Muhammad Ali", true));
+        values.add(new Contact("Charles Darwin", true));
+        values.add(new Contact("Elvis Presley", true));
+
+        MyArrayAdapter adapter = new MyArrayAdapter(this, values, R.layout.row_request);
+//        adapter.addContact(new Contact("Bill Gates", true));
+//        adapter.addContact(new Contact("Muhammad Ali", true));
+//        adapter.addContact(new Contact("Charles Darwin", true));
+//        adapter.addContact(new Contact("Elvis Presley", true));
 
         listview.setAdapter(adapter);
 
@@ -84,25 +118,30 @@ public class MainActivity extends AppCompatActivity
     private void configureContactListView() {
 
         final ListView listview = (ListView) findViewById(R.id.contactlistview);
-        String[] values = new String[] {"1", "2",
-                "3", "4", "5", "6", "7", "8", "9",
-                "10" };
+//        String[] values = new String[] {"1", "2",
+//                "3", "4", "5", "6", "7", "8", "9",
+//                "10" };
+//
+//        final ArrayList<String> list = new ArrayList<>();
+//        for (int i = 0; i < values.length; ++i) {
+//            list.add(values[i]);
+//        }
 
-        final ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-        MyArrayAdapter adapter = new MyArrayAdapter(this, values, true, R.layout.row_contact);
-        adapter.addContact(new Contact("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("Neil Armstrong", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("Donald Trump", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("Barack Obama", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("Steve Jobs", "Requested in Roger Parks, IL on 10/1/2015", false));
-        adapter.addContact(new Contact("J.K.Rowling", "Requested in Roger Parks, IL on 10/1/2015", false));
+
+        List<Contact> values = new ArrayList<Contact>();
+        values.add(new Contact("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Neil Armstrong", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Donald Trump", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Barack Obama", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Steve Jobs", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("J.K.Rowling", "Requested in Roger Parks, IL on 10/1/2015", false));
+
+
+        MyArrayAdapter adapter = new MyArrayAdapter(this, values, R.layout.row_contact);
 
         listview.setAdapter(adapter);
 

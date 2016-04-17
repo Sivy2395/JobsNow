@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.test_2.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContactActivity extends AppCompatActivity {
 
@@ -24,20 +25,16 @@ public class ContactActivity extends AppCompatActivity {
     private void doTheThing() {
 
         final ListView listview = (ListView) findViewById(R.id.profilelistview);
-        String[] values = new String[] { "1", "2", "3",
-                "4", "5"};
 
-        final ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-        MyArrayAdapter adapter = new MyArrayAdapter(getApplicationContext(), values, false, R.layout.row_media);
-        adapter.addContact(new Contact("Facebook", true));
-        adapter.addContact(new Contact("Facebook", true));
-        adapter.addContact(new Contact("Facebook", true));
-        adapter.addContact(new Contact("Facebook", true));
-        adapter.addContact(new Contact("Facebook", true));
+        List<Contact> values = new ArrayList<Contact>();
+        values.add(new Contact("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", false));
 
+
+        MyArrayAdapter adapter = new MyArrayAdapter(this, values, R.layout.row_media);
         listview.setAdapter(adapter);
         updateListViewSize(listview);
 

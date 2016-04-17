@@ -11,9 +11,7 @@ public class Contact implements Serializable {
 
     private boolean added;
 
-    private List<SocialMedia> sMedias = new ArrayList<>();
-
-    //TODO: add social networks
+    private List<SocialMedia> socialMedias = new ArrayList<>();
 
     public Contact(String name) {
         this.name = name;
@@ -44,14 +42,6 @@ public class Contact implements Serializable {
         this.name = name;
     }
 
-    public boolean isAdded() {
-        return added;
-    }
-
-    public void setAdded(boolean added) {
-        this.added = added;
-    }
-
     public String getRequestPlace() {
         return requestPlace;
     }
@@ -59,4 +49,13 @@ public class Contact implements Serializable {
     public void setRequestPlace(String requestPlace) {
         this.requestPlace = requestPlace;
     }
+
+    public List<SocialMedia> getSocialMedias() {
+        return this.socialMedias;
+    }
+
+    public void addSocialMedia(SocialMedia socialMedia) {
+        this.socialMedias.add(socialMedia);
+    }
+
 }

@@ -18,7 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.numbrcase.ContactActivity"></activity>
+        <activity android:name="com.numbrcase.ContactActivity" />
+        <activity android:name="com.numbrcase.AddContactActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name="com.numbrcase.SearchNearbyActivity"></activity>
     </application>
 
 </manifest>
