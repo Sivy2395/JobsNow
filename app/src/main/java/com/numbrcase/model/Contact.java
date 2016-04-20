@@ -1,4 +1,4 @@
-package com.numbrcase;
+package com.numbrcase.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,8 +7,12 @@ import java.util.List;
 public class Contact implements Serializable {
 
     private String name;
+    private String phone;
+    private String email;
+
     private String requestPlace;
 
+    // status that indicate added or requested
     private boolean added;
 
     private List<SocialMedia> socialMedias = new ArrayList<>();
@@ -31,6 +35,21 @@ public class Contact implements Serializable {
         this.name = name;
         this.requestPlace = requestPlace;
         this.added = added;
+    }
+
+    public Contact(String name, String requestPlace, boolean added, List<SocialMedia> socialMedias) {
+        this.name = name;
+        this.requestPlace = requestPlace;
+        this.added = added;
+        this.socialMedias = socialMedias;
+    }
+
+    public Contact(String name, String requestPlace, boolean added, List<SocialMedia> socialMedias, String phone) {
+        this.name = name;
+        this.requestPlace = requestPlace;
+        this.added = added;
+        this.socialMedias = socialMedias;
+        this.phone = phone;
     }
 
 
@@ -58,4 +77,7 @@ public class Contact implements Serializable {
         this.socialMedias.add(socialMedia);
     }
 
+    public String getPhone() {
+        return phone;
+    }
 }

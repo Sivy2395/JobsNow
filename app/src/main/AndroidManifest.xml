@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.numbrcase.MainActivity"
+            android:name="com.numbrcase.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -18,10 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.numbrcase.ContactActivity" />
-        <activity android:name="com.numbrcase.AddContactActivity"
+        <activity android:name="com.numbrcase.activities.ContactActivity" />
+        <activity android:name="com.numbrcase.activities.AddContactActivity"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name="com.numbrcase.SearchNearbyActivity"></activity>
+        <activity android:name="com.numbrcase.activities.SearchNearbyActivity"></activity>
     </application>
 
 </manifest>

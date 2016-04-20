@@ -1,6 +1,10 @@
-package com.numbrcase;
+package com.numbrcase.model;
 
-public class SocialMedia {
+import com.numbrcase.common.SocialMediaIDs;
+
+import java.io.Serializable;
+
+public class SocialMedia implements Serializable {
 
     private int socialMediaID;
 
@@ -15,13 +19,19 @@ public class SocialMedia {
     public SocialMedia(int socialMediaID, String userID) {
         this.socialMediaID = socialMediaID;
         this.userID = userID;
+        this.link = SocialMediaIDs.getLink(socialMediaID, userID);
     }
 
     public int getMediaID() {
-        return this.socialMediaID;
+        return socialMediaID;
     }
 
-    public void setSocialMediaID(int socialMediaID) {
-        this.socialMediaID = socialMediaID;
+    public String getUserID() {
+        return userID;
     }
+
+    public String getLink() {
+        return link;
+    }
+
 }

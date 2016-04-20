@@ -1,4 +1,4 @@
-package com.numbrcase;
+package com.numbrcase.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,11 +15,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.numbrcase.common.SocialMediaIDs;
+import com.numbrcase.model.Contact;
+import com.numbrcase.model.ContactArrayAdapter;
+import com.numbrcase.model.SocialMedia;
 import com.test_2.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
@@ -27,10 +30,14 @@ import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private ListView contactLV;
+    private ListView requestLV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,127 +50,107 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        configureRequestListView();
-        configureContactListView();
-
+        // Add and Search Nearby buttons
         FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed_dial);
         fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
             @Override
             public boolean onMenuItemSelected(MenuItem menuItem) {
 
-                if (menuItem.getItemId() == R.id.add) {
+                if (menuItem.getItemId() == R.id.add)
+                    startActivity(new Intent(getApplicationContext(), AddContactActivity.class));
 
-                    Intent intent = new Intent(getApplicationContext(), AddContactActivity.class);
-                    startActivity(intent);
-
-                }
-                else if (menuItem.getItemId() == R.id.search_nearby) {
-
-                    Intent intent = new Intent(getApplicationContext(), SearchNearbyActivity.class);
-                    startActivity(intent);
-
-                }
+                else if (menuItem.getItemId() == R.id.search_nearby)
+                    startActivity(new Intent(getApplicationContext(), SearchNearbyActivity.class));
 
                 return false;
             }
         });
 
+        configureRequestListView();
+        configureContactListView();
     }
 
     private void configureRequestListView() {
 
-        final ListView listview = (ListView) findViewById(R.id.requestlistview);
-//        String[] values = new String[] { "1", "2", "3",
-//                "4", };
-//
-//        final ArrayList<String> list = new ArrayList<>();
-//        for (int i = 0; i < values.length; ++i) {
-//            list.add(values[i]);
-//        }
+        requestLV = (ListView) findViewById(R.id.requestlistview);
 
-        List<Contact> values = new ArrayList<Contact>();
+        List<Contact> values = new ArrayList<>();
         values.add(new Contact("Bill Gates", true));
         values.add(new Contact("Muhammad Ali", true));
         values.add(new Contact("Charles Darwin", true));
         values.add(new Contact("Elvis Presley", true));
 
-        MyArrayAdapter adapter = new MyArrayAdapter(this, values, R.layout.row_request);
-//        adapter.addContact(new Contact("Bill Gates", true));
-//        adapter.addContact(new Contact("Muhammad Ali", true));
-//        adapter.addContact(new Contact("Charles Darwin", true));
-//        adapter.addContact(new Contact("Elvis Presley", true));
+        ContactArrayAdapter adapter = new ContactArrayAdapter(this, values, R.layout.row_request);
 
-        listview.setAdapter(adapter);
+        requestLV.setAdapter(adapter);
 
-        updateListViewSize(listview);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        requestLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
 
-                    Contact cTest = new Contact("Leandro");
-
-                    Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
-                    intent.putExtra("here", cTest);
-
-                    startActivity(intent);
+                //TODO: Create a ContactRequestActivity
+//                Contact cTest = new Contact("Leandro");
+//
+//                Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+//                intent.putExtra("here", cTest);
+//
+//                startActivity(intent);
             }
         });
 
+        updateListViewSize(requestLV);
     }
 
 
     private void configureContactListView() {
 
-        final ListView listview = (ListView) findViewById(R.id.contactlistview);
-//        String[] values = new String[] {"1", "2",
-//                "3", "4", "5", "6", "7", "8", "9",
-//                "10" };
-//
-//        final ArrayList<String> list = new ArrayList<>();
-//        for (int i = 0; i < values.length; ++i) {
-//            list.add(values[i]);
-//        }
+        contactLV = (ListView) findViewById(R.id.contactlistview);
 
+        List<SocialMedia> sMedias = new ArrayList<>();
+        sMedias.add(new SocialMedia(SocialMediaIDs.FACEBOOK , "faceID"));
+        sMedias.add(new SocialMedia(SocialMediaIDs.INSTAGRAM, "instaID"));
+        sMedias.add(new SocialMedia(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
+        sMedias.add(new SocialMedia(SocialMediaIDs.TWITTER  , "twitterID"));
 
         List<Contact> values = new ArrayList<Contact>();
-        values.add(new Contact("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("Neil Armstrong", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("Donald Trump", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("Barack Obama", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("Steve Jobs", "Requested in Roger Parks, IL on 10/1/2015", false));
-        values.add(new Contact("J.K.Rowling", "Requested in Roger Parks, IL on 10/1/2015", false));
+        values.add(new Contact("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1921"));
+        values.add(new Contact("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1922"));
+        values.add(new Contact("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1923"));
+        values.add(new Contact("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1924"));
+        values.add(new Contact("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1925"));
+        values.add(new Contact("Neil Armstrong", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1926"));
+        values.add(new Contact("Donald Trump", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1927"));
+        values.add(new Contact("Barack Obama", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1928"));
+        values.add(new Contact("Steve Jobs", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1929"));
 
+        ContactArrayAdapter adapter = new ContactArrayAdapter(this, values, R.layout.row_contact);
 
-        MyArrayAdapter adapter = new MyArrayAdapter(this, values, R.layout.row_contact);
+        contactLV.setAdapter(adapter);
 
-        listview.setAdapter(adapter);
-
-        updateListViewSize(listview);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        contactLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
 
-                Contact cTest = new Contact("Leandro");
+                Contact contact = ((Contact) contactLV.getAdapter().getItem(position));
 
                 Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
-                intent.putExtra("here", cTest);
+                intent.putExtra("contact", contact);
 
                 startActivity(intent);
             }
         });
 
+        updateListViewSize(contactLV);
     }
 
+    /**
+     * Method required to expand a ListView since Android do not support a ListView inside
+     * a ScrollView
+     */
     private void updateListViewSize(ListView listview) {
         int totalHeight = 0;
         for (int i = 0; i < listview.getAdapter().getCount(); i++) {
@@ -176,7 +163,6 @@ public class MainActivity extends AppCompatActivity
         params.height = totalHeight + (listview.getDividerHeight() * (listview.getCount() - 1));
         listview.setLayoutParams(params);
         listview.requestLayout();
-
     }
 
 
@@ -203,11 +189,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
 
         return super.onOptionsItemSelected(item);
     }

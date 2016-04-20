@@ -1,4 +1,4 @@
-package com.numbrcase;
+package com.numbrcase.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,11 +7,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 
+import com.numbrcase.common.SocialMediaIDs;
+import com.numbrcase.model.MediaArrayAdapter;
+import com.numbrcase.model.SocialMedia;
 import com.test_2.R;
 
 import java.util.ArrayList;
@@ -20,12 +21,17 @@ import java.util.List;
 public class AddContactActivity extends AppCompatActivity {
 
     private ListView listview;
-    List<Contact> values = new ArrayList<>();
+
+    List<SocialMedia> socialMedias = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
+
+        listview = (ListView) findViewById(R.id.social_medias_list_view);
+        MediaArrayAdapter adapter = new MediaArrayAdapter(this, new ArrayList<SocialMedia>(), R.layout.row_add_media);
+        listview.setAdapter(adapter);
     }
 
     @Override
@@ -35,8 +41,32 @@ public class AddContactActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method called whenever the button "Add Social Media" is pressed
+     */
     public void openSocialMedias(View view) {
         PopupMenu popup = new PopupMenu(this, view);
+
+        // Populate social_media_menu dinamically (maybe later)
+        List<Integer> mediaIDs = SocialMediaIDs.getSocialMediaIDs();
+        for (int i = 0; i < mediaIDs.size(); i++) {
+            boolean mediaNotAlreadyAdded = true;
+
+            if (listview != null) {
+                for (int j = 0; j < listview.getAdapter().getCount(); j++) {
+                    // If the social media have already been added into the list
+                    if (mediaIDs.get(i) == ((SocialMedia) listview.getAdapter().getItem(j)).getMediaID()) {
+                        mediaNotAlreadyAdded = false;
+                        break;
+                    }
+                }
+            }
+
+            // If the media was not added or the listview was not created yet
+            if (listview == null || mediaNotAlreadyAdded)
+                popup.getMenu().add(0, mediaIDs.get(i), 0, SocialMediaIDs.getName(mediaIDs.get(i)));
+        }
+
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.social_media_menu, popup.getMenu());
         popup.show();
@@ -45,24 +75,7 @@ public class AddContactActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                int socialMediaID = 0;
-
-                switch (item.getItemId()) {
-                    case R.id.facebook:
-                        socialMediaID = SocialMediaIDs.FACEBOOK;
-                        break;
-
-                    case R.id.instagram:
-                        socialMediaID = SocialMediaIDs.INSTAGRAM;
-                        break;
-
-                    case R.id.twitter:
-                        socialMediaID = SocialMediaIDs.TWITTER;
-                        break;
-                }
-
-
-                doTheThing(socialMediaID);
+                addMedia(item.getItemId());
                 return true;
             }
         });
@@ -70,22 +83,20 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
 
-    public void doTheThing(int socialMediaID) {
+    public void addMedia(int socialMediaID) {
 
-        listview = (ListView) findViewById(R.id.social_medias_list_view);
-
-        SocialMedia socialMedia = new SocialMedia(socialMediaID);
-        Contact contact = new Contact("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", false);
-        contact.addSocialMedia(socialMedia);
-
-        values.add(contact);
-
-        MyArrayAdapter adapter = new MyArrayAdapter(this, values, R.layout.row_add_media);
+        socialMedias.add(new SocialMedia(socialMediaID));
+        MediaArrayAdapter adapter = new MediaArrayAdapter(this, socialMedias, R.layout.row_add_media);
         listview.setAdapter(adapter);
 
         updateListViewSize(listview);
     }
 
+
+    /**
+     * Method required to expand a ListView since Android do not support a ListView inside
+     * a ScrollView
+     */
     private void updateListViewSize(ListView listview) {
         int totalHeight = 0;
         for (int i = 0; i < listview.getAdapter().getCount(); i++) {
