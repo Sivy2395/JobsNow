@@ -19,9 +19,11 @@
             </intent-filter>
         </activity>
         <activity android:name="com.numbrcase.activities.ContactActivity" />
-        <activity android:name="com.numbrcase.activities.AddContactActivity"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name="com.numbrcase.activities.SearchNearbyActivity"></activity>
+        <activity
+            android:name="com.numbrcase.activities.AddContactActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name="com.numbrcase.activities.SearchNearbyActivity" />
+        <activity android:name="com.numbrcase.activities.AcceptRequestActivity"></activity>
     </application>
 
 </manifest>

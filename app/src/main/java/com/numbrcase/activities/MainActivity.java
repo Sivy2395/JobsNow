@@ -74,11 +74,18 @@ public class MainActivity extends AppCompatActivity
 
         requestLV = (ListView) findViewById(R.id.requestlistview);
 
+        List<SocialMedia> sMedias = new ArrayList<>();
+        sMedias.add(new SocialMedia(SocialMediaIDs.FACEBOOK , "faceID"));
+        sMedias.add(new SocialMedia(SocialMediaIDs.INSTAGRAM, "instaID"));
+        sMedias.add(new SocialMedia(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
+        sMedias.add(new SocialMedia(SocialMediaIDs.TWITTER  , "twitterID"));
+
         List<Contact> values = new ArrayList<>();
-        values.add(new Contact("Bill Gates", true));
-        values.add(new Contact("Muhammad Ali", true));
-        values.add(new Contact("Charles Darwin", true));
-        values.add(new Contact("Elvis Presley", true));
+        values.add(new Contact("Bill Gates", "Requested in Roger Parks, IL on 10/1/2015", true, sMedias, "+1 773 987 1921"));
+        values.add(new Contact("Muhammad Ali", "Requested in Roger Parks, IL on 10/1/2015", true, sMedias, "+1 773 987 1922"));
+        values.add(new Contact("Charles Darwin", "Requested in Roger Parks, IL on 10/1/2015", true, sMedias, "+1 773 987 1923"));
+        values.add(new Contact("Elvis Presley", "Requested in Roger Parks, IL on 10/1/2015", true, sMedias, "+1 773 987 1924"));
+
 
         ContactArrayAdapter adapter = new ContactArrayAdapter(this, values, R.layout.row_request);
 
@@ -91,12 +98,12 @@ public class MainActivity extends AppCompatActivity
                                     int position, long id) {
 
                 //TODO: Create a ContactRequestActivity
-//                Contact cTest = new Contact("Leandro");
-//
-//                Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
-//                intent.putExtra("here", cTest);
-//
-//                startActivity(intent);
+                Contact contact = ((Contact) requestLV.getAdapter().getItem(position));
+
+                Intent intent = new Intent(getApplicationContext(), AcceptRequestActivity.class);
+                intent.putExtra("contact", contact);
+
+                startActivity(intent);
             }
         });
 
