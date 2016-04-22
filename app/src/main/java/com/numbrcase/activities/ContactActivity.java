@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.numbrcase.model.Contact;
+import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.MediaArrayAdapter;
 import com.numbrcase.model.SocialMedia;
 import com.test_2.R;
@@ -24,7 +24,7 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        Contact contact = (Contact) getIntent().getSerializableExtra("contact");
+        ContactImpl contact = (ContactImpl) getIntent().getSerializableExtra("contact");
         List<SocialMedia> socialMedias = contact.getSocialMedias();
 
 
@@ -32,7 +32,7 @@ public class ContactActivity extends AppCompatActivity {
         showMediasInformation(socialMedias);
     }
 
-    private void showContactInformation(Contact contact) {
+    private void showContactInformation(ContactImpl contact) {
         ((TextView)findViewById(R.id.contact_name)).setText(contact.getName());
         ((TextView)findViewById(R.id.phone_number)).setText(contact.getPhone());
     }

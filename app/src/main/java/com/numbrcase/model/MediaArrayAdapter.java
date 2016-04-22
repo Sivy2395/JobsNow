@@ -14,7 +14,7 @@ import com.test_2.R;
 import java.util.List;
 
 /**
- * Adater that will manipulate the content of a Listview
+ * Adapter that will manipulate the content of a Listview
  */
 public class MediaArrayAdapter extends ArrayAdapter<SocialMedia> {
 

@@ -1,83 +1,30 @@
 package com.numbrcase.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+public interface Contact {
 
-public class Contact implements Serializable {
+    // Contact Status
+    public int ADDED     = 1;
+    public int REQUESTED = 2;
 
-    private String name;
-    private String phone;
-    private String email;
+    /* Get Methods */
+    public int getID();
 
-    private String requestPlace;
+    public String getName();
+    public String getPhone();
+    public String getEmail();
 
-    // status that indicate added or requested
-    private boolean added;
+    public String getRequestPlace();
 
-    private List<SocialMedia> socialMedias = new ArrayList<>();
+    public int getStatus();
 
-    public Contact(String name) {
-        this.name = name;
-    }
+    /* Set Methods */
+    public void setID(int ID);
 
-    public Contact(String name, String requestPlace) {
-        this.name = name;
-        this.requestPlace = requestPlace;
-    }
+    public void setName(String name);
+    public void setPhone(String phone);
+    public void setEmail(String email);
 
-    public Contact(String name, boolean added) {
-        this.name = name;
-        this.added = added;
-    }
+    public void setRequestPlace(String requestPlace);
 
-    public Contact(String name, String requestPlace, boolean added) {
-        this.name = name;
-        this.requestPlace = requestPlace;
-        this.added = added;
-    }
-
-    public Contact(String name, String requestPlace, boolean added, List<SocialMedia> socialMedias) {
-        this.name = name;
-        this.requestPlace = requestPlace;
-        this.added = added;
-        this.socialMedias = socialMedias;
-    }
-
-    public Contact(String name, String requestPlace, boolean added, List<SocialMedia> socialMedias, String phone) {
-        this.name = name;
-        this.requestPlace = requestPlace;
-        this.added = added;
-        this.socialMedias = socialMedias;
-        this.phone = phone;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRequestPlace() {
-        return requestPlace;
-    }
-
-    public void setRequestPlace(String requestPlace) {
-        this.requestPlace = requestPlace;
-    }
-
-    public List<SocialMedia> getSocialMedias() {
-        return this.socialMedias;
-    }
-
-    public void addSocialMedia(SocialMedia socialMedia) {
-        this.socialMedias.add(socialMedia);
-    }
-
-    public String getPhone() {
-        return phone;
-    }
+    public void setStatus(int status);
 }

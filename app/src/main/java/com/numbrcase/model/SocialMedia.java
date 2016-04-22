@@ -34,4 +34,15 @@ public class SocialMedia implements Serializable {
         return link;
     }
 
+    public void setSocialMediaID(int socialMediaID) {
+        this.socialMediaID = socialMediaID;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
 }

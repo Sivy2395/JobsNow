@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:text="Deny"
                     android:layout_centerHorizontal="true"
-                    android:textColor="#F08080"
+                    android:textColor="#B20000"
                     android:background="@drawable/botton_color_shape"
                     android:onClick="openSocialMedias"
                     />

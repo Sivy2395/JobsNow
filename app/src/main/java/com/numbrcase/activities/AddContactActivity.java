@@ -7,10 +7,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.numbrcase.common.SocialMediaIDs;
+import com.numbrcase.database.ContactDB;
+import com.numbrcase.model.Contact;
+import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.MediaArrayAdapter;
 import com.numbrcase.model.SocialMedia;
 import com.test_2.R;
@@ -79,7 +84,6 @@ public class AddContactActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
 
@@ -112,4 +116,49 @@ public class AddContactActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method called whenever the button "Save" is pressed
+     */
+    public void saveContact(MenuItem item){
+        ContactDB db = new ContactDB(this);
+
+        EditText etName   = (EditText) findViewById(R.id.contact_name);
+        EditText etPhone  = (EditText) findViewById(R.id.phone_number);
+        EditText etEmail  = (EditText) findViewById(R.id.social_media_id);
+
+        ListView lvMedias = (ListView) findViewById(R.id.social_medias_list_view);
+
+        for (int i = 0; i < lvMedias.getAdapter().getCount(); i++) {
+            EditText etMediaID  = (EditText) lvMedias.findViewById(R.id.social_media_id);
+            String mediaID = etMediaID.getText().toString();
+
+            // Add only medias with ID setted
+            if (mediaID == null || mediaID.equals(""))
+                continue;
+            else
+                socialMedias.get(i).setUserID(etMediaID.getText().toString());
+        }
+
+        int a = db.numberOfRows();
+
+        Contact contact = new ContactImpl();
+        contact.setName(etName.getText().toString());
+        contact.setPhone(etPhone.getText().toString());
+        contact.setEmail(etEmail.getText().toString());
+        contact.setRequestPlace("");
+        contact.setStatus(Contact.ADDED);
+
+        db.insertContact(new ContactImpl());
+        int b = db.numberOfRows();
+
+        Toast.makeText(this, "Contact Saved", Toast.LENGTH_SHORT).show();
+        onBackPressed(); //Back to MainActivity
+    }
+
+    /**
+     * Method called whenever the button "Cancel" is pressed
+     */
+    public void cancel(MenuItem item){
+        onBackPressed(); //Back to MainActivity
+    }
 }

@@ -13,16 +13,16 @@ import com.test_2.R;
 import java.util.List;
 
 /**
- * Adater that will manipulate the content of a Listview
+ * Adapter that will manipulate the content of a Listview
  */
-public class ContactArrayAdapter extends ArrayAdapter<Contact> {
+public class ContactArrayAdapter extends ArrayAdapter<ContactImpl> {
 
     private final Context context;
-    private final List<Contact> values;
+    private final List<ContactImpl> values;
 
     private int layout;
 
-    public ContactArrayAdapter(Context context, List<Contact> values, int layout) {
+    public ContactArrayAdapter(Context context, List<ContactImpl> values, int layout) {
         super(context, -1, values);
         this.context = context;
 

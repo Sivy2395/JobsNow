@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import com.numbrcase.common.SocialMediaIDs;
 import com.numbrcase.model.Contact;
+import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.ContactArrayAdapter;
 import com.numbrcase.model.SocialMedia;
 import com.test_2.R;
@@ -80,11 +81,11 @@ public class MainActivity extends AppCompatActivity
         sMedias.add(new SocialMedia(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
         sMedias.add(new SocialMedia(SocialMediaIDs.TWITTER  , "twitterID"));
 
-        List<Contact> values = new ArrayList<>();
-        values.add(new Contact("Bill Gates", "Requested in Roger Parks, IL on 10/1/2015", true, sMedias, "+1 773 987 1921"));
-        values.add(new Contact("Muhammad Ali", "Requested in Roger Parks, IL on 10/1/2015", true, sMedias, "+1 773 987 1922"));
-        values.add(new Contact("Charles Darwin", "Requested in Roger Parks, IL on 10/1/2015", true, sMedias, "+1 773 987 1923"));
-        values.add(new Contact("Elvis Presley", "Requested in Roger Parks, IL on 10/1/2015", true, sMedias, "+1 773 987 1924"));
+        List<ContactImpl> values = new ArrayList<>();
+        values.add(new ContactImpl("Bill Gates", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, sMedias, "+1 773 987 1921"));
+        values.add(new ContactImpl("Muhammad Ali", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, sMedias, "+1 773 987 1922"));
+        values.add(new ContactImpl("Charles Darwin", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, sMedias, "+1 773 987 1923"));
+        values.add(new ContactImpl("Elvis Presley", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, sMedias, "+1 773 987 1924"));
 
 
         ContactArrayAdapter adapter = new ContactArrayAdapter(this, values, R.layout.row_request);
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity
                                     int position, long id) {
 
                 //TODO: Create a ContactRequestActivity
-                Contact contact = ((Contact) requestLV.getAdapter().getItem(position));
+                ContactImpl contact = ((ContactImpl) requestLV.getAdapter().getItem(position));
 
                 Intent intent = new Intent(getApplicationContext(), AcceptRequestActivity.class);
                 intent.putExtra("contact", contact);
@@ -121,16 +122,16 @@ public class MainActivity extends AppCompatActivity
         sMedias.add(new SocialMedia(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
         sMedias.add(new SocialMedia(SocialMediaIDs.TWITTER  , "twitterID"));
 
-        List<Contact> values = new ArrayList<Contact>();
-        values.add(new Contact("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1921"));
-        values.add(new Contact("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1922"));
-        values.add(new Contact("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1923"));
-        values.add(new Contact("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1924"));
-        values.add(new Contact("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1925"));
-        values.add(new Contact("Neil Armstrong", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1926"));
-        values.add(new Contact("Donald Trump", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1927"));
-        values.add(new Contact("Barack Obama", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1928"));
-        values.add(new Contact("Steve Jobs", "Requested in Roger Parks, IL on 10/1/2015", false, sMedias, "+1 773 987 1929"));
+        List<ContactImpl> values = new ArrayList<ContactImpl>();
+        values.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1921"));
+        values.add(new ContactImpl("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1922"));
+        values.add(new ContactImpl("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1923"));
+        values.add(new ContactImpl("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1924"));
+        values.add(new ContactImpl("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1925"));
+        values.add(new ContactImpl("Neil Armstrong", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1926"));
+        values.add(new ContactImpl("Donald Trump", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1927"));
+        values.add(new ContactImpl("Barack Obama", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1928"));
+        values.add(new ContactImpl("Steve Jobs", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1929"));
 
         ContactArrayAdapter adapter = new ContactArrayAdapter(this, values, R.layout.row_contact);
 
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
 
-                Contact contact = ((Contact) contactLV.getAdapter().getItem(position));
+                ContactImpl contact = ((ContactImpl) contactLV.getAdapter().getItem(position));
 
                 Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
                 intent.putExtra("contact", contact);

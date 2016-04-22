@@ -5,13 +5,13 @@
 
     <!-- seach view tutorial http://javapapers.com/android/android-searchview-action-bar-tutorial-->
     <item
-        android:id="@+id/menu_search"
+        android:id="@+id/menu_cancel"
         android:title="search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/save"
+        android:id="@+id/menu_save"
         android:title="search"
         app:actionViewClass="android.support.v7.widget.SwitchCompat"
         app:showAsAction="always"/>
