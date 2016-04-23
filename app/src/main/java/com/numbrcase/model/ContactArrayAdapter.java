@@ -15,14 +15,14 @@ import java.util.List;
 /**
  * Adapter that will manipulate the content of a Listview
  */
-public class ContactArrayAdapter extends ArrayAdapter<ContactImpl> {
+public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 
     private final Context context;
-    private final List<ContactImpl> values;
+    private final List<Contact> values;
 
     private int layout;
 
-    public ContactArrayAdapter(Context context, List<ContactImpl> values, int layout) {
+    public ContactArrayAdapter(Context context, List<Contact> values, int layout) {
         super(context, -1, values);
         this.context = context;
 

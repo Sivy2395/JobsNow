@@ -1,6 +1,5 @@
 package com.numbrcase.common;
 
-import com.numbrcase.model.SocialMedia;
 import com.test_2.R;
 
 import java.util.ArrayList;

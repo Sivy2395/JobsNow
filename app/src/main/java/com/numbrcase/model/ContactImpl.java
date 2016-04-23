@@ -1,10 +1,11 @@
 package com.numbrcase.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactImpl implements Contact, Serializable {
+public class ContactImpl implements Contact {
+
+    private int contactID;
 
     private String name;
     private String phone;
@@ -59,7 +60,7 @@ public class ContactImpl implements Contact, Serializable {
 
     @Override
     public int getID() {
-        return 0;
+        return contactID;
     }
 
     public String getName() {
@@ -72,12 +73,12 @@ public class ContactImpl implements Contact, Serializable {
 
     @Override
     public void setPhone(String phone) {
-
+        this.phone = phone;
     }
 
     @Override
     public void setEmail(String email) {
-
+        this.email = email;
     }
 
     public String getRequestPlace() {
@@ -91,7 +92,7 @@ public class ContactImpl implements Contact, Serializable {
 
     @Override
     public void setID(int ID) {
-
+        this.contactID = ID;
     }
 
     public void setRequestPlace(String requestPlace) {
@@ -100,14 +101,19 @@ public class ContactImpl implements Contact, Serializable {
 
     @Override
     public void setStatus(int status) {
+        this.status = status;
+    }
 
+    @Override
+    public void setSocialMedias(List<SocialMedia> socialMedias) {
+        this.socialMedias = socialMedias;
     }
 
     public List<SocialMedia> getSocialMedias() {
         return this.socialMedias;
     }
 
-    public void addSocialMedia(SocialMedia socialMedia) {
+    public void addSocialMedia(SocialMediaImpl socialMedia) {
         this.socialMedias.add(socialMedia);
     }
 
@@ -117,6 +123,6 @@ public class ContactImpl implements Contact, Serializable {
 
     @Override
     public String getEmail() {
-        return null;
+        return email;
     }
 }

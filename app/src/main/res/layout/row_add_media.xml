@@ -13,7 +13,7 @@ android:layout_height="wrap_content">
 
 
     <EditText
-        android:id="@+id/social_media_id"
+        android:id="@+id/user_id"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

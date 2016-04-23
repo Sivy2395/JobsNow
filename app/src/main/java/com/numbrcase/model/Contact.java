@@ -1,6 +1,9 @@
 package com.numbrcase.model;
 
-public interface Contact {
+import java.io.Serializable;
+import java.util.List;
+
+public interface Contact extends Serializable {
 
     // Contact Status
     public int ADDED     = 1;
@@ -17,6 +20,9 @@ public interface Contact {
 
     public int getStatus();
 
+    public List<SocialMedia> getSocialMedias();
+
+
     /* Set Methods */
     public void setID(int ID);
 
@@ -27,4 +33,6 @@ public interface Contact {
     public void setRequestPlace(String requestPlace);
 
     public void setStatus(int status);
+
+    public void setSocialMedias(List<SocialMedia> socialMedias);
 }

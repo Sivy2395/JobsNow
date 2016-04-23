@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.MediaArrayAdapter;
 import com.numbrcase.model.SocialMedia;
+import com.numbrcase.model.SocialMediaImpl;
 import com.test_2.R;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class ContactActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
 
-                SocialMedia socialMedia = ((SocialMedia) listview.getAdapter().getItem(position));
+                SocialMediaImpl socialMedia = ((SocialMediaImpl) listview.getAdapter().getItem(position));
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(socialMedia.getLink()));
                 startActivity(browserIntent);

@@ -1,22 +1,5 @@
 package com.numbrcase;
 
-import android.app.Activity;
-import android.content.Context;
-import android.database.Cursor;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
-import android.test.AndroidTestCase;
-import android.test.ProviderTestCase2;
-import android.test.RenamingDelegatingContext;
-import android.test.ServiceTestCase;
-import android.test.mock.MockApplication;
-import android.test.mock.MockContentResolver;
-import android.util.Log;
-
-import com.numbrcase.database.ContactDB;
-import com.numbrcase.model.Contact;
-import com.numbrcase.model.ContactImpl;
-
 import org.junit.Test;
 
 import static org.junit.Assert.*;

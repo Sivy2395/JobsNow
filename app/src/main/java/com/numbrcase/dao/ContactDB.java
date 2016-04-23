@@ -1,4 +1,4 @@
-package com.numbrcase.database;
+package com.numbrcase.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,21 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.numbrcase.model.Contact;
+import com.numbrcase.model.ContactImpl;
+import com.numbrcase.model.SocialMedia;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactDB extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "numbrcase.db";
+    public static final String DATABASE_NAME = "contact.db";
 
     public static final String CONTACTS_TABLE_NAME   = "contact";
-
-    public static final String CONTACTS_COLUMN_ID    = "id";
-    public static final String CONTACTS_COLUMN_NAME  = "name";
-    public static final String CONTACTS_COLUMN_EMAIL = "email";
-    public static final String CONTACTS_COLUMN_PHONE = "phone";
-
 
     public ContactDB(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -31,7 +27,7 @@ public class ContactDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE contact  (" +
-        "id            INTEGER PRIMARY KEY," +
+        "contact_id    INTEGER PRIMARY KEY," +
         "name          TEXT,               " +
         "phone         TEXT,               " +
         "email         TEXT,               " +
@@ -48,7 +44,7 @@ public class ContactDB extends SQLiteOpenHelper {
 
     public Cursor getData(int id){
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("SELECT * FROM contact WHERE id =" + id + ";", null);
+        return db.rawQuery("SELECT * FROM contact WHERE contact_id =" + id + ";", null);
     }
 
 
@@ -63,6 +59,7 @@ public class ContactDB extends SQLiteOpenHelper {
         contentValues.put("status"       , contact.getStatus());
 
         db.insert("contact", null, contentValues);
+
         return true;
     }
 
@@ -81,33 +78,44 @@ public class ContactDB extends SQLiteOpenHelper {
         contentValues.put("request_place", contact.getRequestPlace());
         contentValues.put("status"       , contact.getStatus());
 
-        db.update("contact", contentValues, "id = ? ", new String[] { Integer.toString(contact.getID()) } );
+        db.update("contact", contentValues, "contact_id = ? ", new String[] { Integer.toString(contact.getID()) } );
         return true;
     }
 
 
     public Integer deleteContact (Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("contact", "id = ? ", new String[] { Integer.toString(id) });
+        return db.delete("contact", "contact_id = ? ", new String[] { Integer.toString(id) });
     }
 
 
-    public List<String> getAllCotacts() {
+    public List<Contact> getAllContacts(Context context) {
 
-//        List<String> array_list = new ArrayList<>();
-//
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor res = db.rawQuery( "select * from contact", null );
-//        res.moveToFirst();
-//
-//        while(res.isAfterLast() == false){
-//            array_list.add(res.getString(res.getColumnIndex(CONTACTS_COLUMN_NAME)));
-//            res.moveToNext();
-//        }
-//
-//        return array_list;
-        return  null;
+        List<Contact> contacts = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res = db.rawQuery( "select * from contact", null );
+        res.moveToFirst();
+
+        while(res.isAfterLast() == false){
+            Contact contact = new ContactImpl();
+
+            contact.setID          (res.getInt   (0)); // contact_id
+            contact.setName        (res.getString(1)); // name
+            contact.setPhone       (res.getString(2)); // phone
+            contact.setEmail       (res.getString(3)); // email
+            contact.setRequestPlace(res.getString(4)); // request_place
+            contact.setStatus      (res.getInt   (5)); // status
+
+            SocialMediaDB smDB = new SocialMediaDB(context);
+            contact.setSocialMedias(smDB.getSocialMediasByUserID(contact.getID()));
+
+            contacts.add(contact);
+            res.moveToNext();
+        }
+
+        return contacts;
     }
 
 }

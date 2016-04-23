@@ -2,6 +2,7 @@ package com.numbrcase.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatEditText;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,11 +14,13 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.numbrcase.common.SocialMediaIDs;
-import com.numbrcase.database.ContactDB;
+import com.numbrcase.dao.ContactDB;
+import com.numbrcase.dao.SocialMediaDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.MediaArrayAdapter;
 import com.numbrcase.model.SocialMedia;
+import com.numbrcase.model.SocialMediaImpl;
 import com.test_2.R;
 
 import java.util.ArrayList;
@@ -60,7 +63,7 @@ public class AddContactActivity extends AppCompatActivity {
             if (listview != null) {
                 for (int j = 0; j < listview.getAdapter().getCount(); j++) {
                     // If the social media have already been added into the list
-                    if (mediaIDs.get(i) == ((SocialMedia) listview.getAdapter().getItem(j)).getMediaID()) {
+                    if (mediaIDs.get(i) == ((SocialMediaImpl) listview.getAdapter().getItem(j)).getMediaID()) {
                         mediaNotAlreadyAdded = false;
                         break;
                     }
@@ -89,7 +92,7 @@ public class AddContactActivity extends AppCompatActivity {
 
     public void addMedia(int socialMediaID) {
 
-        socialMedias.add(new SocialMedia(socialMediaID));
+        socialMedias.add(new SocialMediaImpl(socialMediaID));
         MediaArrayAdapter adapter = new MediaArrayAdapter(this, socialMedias, R.layout.row_add_media);
         listview.setAdapter(adapter);
 
@@ -124,22 +127,26 @@ public class AddContactActivity extends AppCompatActivity {
 
         EditText etName   = (EditText) findViewById(R.id.contact_name);
         EditText etPhone  = (EditText) findViewById(R.id.phone_number);
-        EditText etEmail  = (EditText) findViewById(R.id.social_media_id);
+        EditText etEmail  = (EditText) findViewById(R.id.email);
 
         ListView lvMedias = (ListView) findViewById(R.id.social_medias_list_view);
 
         for (int i = 0; i < lvMedias.getAdapter().getCount(); i++) {
-            EditText etMediaID  = (EditText) lvMedias.findViewById(R.id.social_media_id);
-            String mediaID = etMediaID.getText().toString();
+            EditText etMediaID2  = (EditText) lvMedias.getAdapter().getView(1, findViewById(R.id.social_medias_list_view), null).findViewById(R.id.user_id);
+            AppCompatEditText asd = (AppCompatEditText) etMediaID2;
+            String ms = asd.getText().toString();
 
-            // Add only medias with ID setted
-            if (mediaID == null || mediaID.equals(""))
+            List<View> views  = lvMedias.getTouchables();
+            String userID = ((EditText) views.get(i+i+1)).getText().toString();
+
+            // Add only medias with userID setted
+            if (userID.equals(""))
                 continue;
-            else
-                socialMedias.get(i).setUserID(etMediaID.getText().toString());
+            else {
+                socialMedias.get(i).setUserID(userID);
+                socialMedias.get(i).setContactID(db.numberOfRows()+1);
+            }
         }
-
-        int a = db.numberOfRows();
 
         Contact contact = new ContactImpl();
         contact.setName(etName.getText().toString());
@@ -147,9 +154,15 @@ public class AddContactActivity extends AppCompatActivity {
         contact.setEmail(etEmail.getText().toString());
         contact.setRequestPlace("");
         contact.setStatus(Contact.ADDED);
+        contact.setSocialMedias(socialMedias);
 
-        db.insertContact(new ContactImpl());
-        int b = db.numberOfRows();
+        db.insertContact(contact);
+
+        // Insert Social Medias
+        SocialMediaDB smDB = new SocialMediaDB(this);
+        for (SocialMedia sm : contact.getSocialMedias()) {
+            smDB.insertSocialMedia(sm);
+        }
 
         Toast.makeText(this, "Contact Saved", Toast.LENGTH_SHORT).show();
         onBackPressed(); //Back to MainActivity
