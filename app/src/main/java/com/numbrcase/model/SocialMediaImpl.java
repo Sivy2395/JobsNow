@@ -53,6 +53,9 @@ public class SocialMediaImpl implements SocialMedia {
     }
 
     public String getLink() {
+        if (link == null)
+            link = SocialMediaIDs.getLink(socialMediaID, userID);
+
         return link;
     }
 
