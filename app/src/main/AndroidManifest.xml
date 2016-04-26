@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test_2">
 
+    <uses-permission android:name="android.permission.READ_SMS"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +25,8 @@
             android:name="com.numbrcase.activities.AddContactActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.numbrcase.activities.SearchNearbyActivity" />
-        <activity android:name="com.numbrcase.activities.AcceptRequestActivity"></activity>
+        <activity android:name="com.numbrcase.activities.AcceptRequestActivity" />
+        <activity android:name="com.numbrcase.activities.MyAccountActivity"></activity>
     </application>
 
 </manifest>

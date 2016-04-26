@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
-import com.numbrcase.model.SocialMedia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +41,25 @@ public class ContactDB extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getData(int id){
+    public Contact getData(int id, Context context){
+        Contact contact = new ContactImpl();
+
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("SELECT * FROM contact WHERE contact_id =" + id + ";", null);
+        Cursor c = db.rawQuery("SELECT * FROM contact WHERE contact_id = " + id + ";", null);
+
+        c.moveToFirst();
+        contact.setID          (c.getInt   (0)); // contact_id
+        contact.setName        (c.getString(1)); // name
+        contact.setPhone       (c.getString(2)); // phone
+        contact.setEmail       (c.getString(3)); // email
+        contact.setRequestPlace(c.getString(4)); // request_place
+        contact.setStatus      (c.getInt   (5)); // status
+
+        SocialMediaDB smDB = new SocialMediaDB(context);
+        contact.setSocialMedias(smDB.getSocialMediasByContactID(contact.getID()));
+
+        return contact;
+
     }
 
 
@@ -109,7 +124,7 @@ public class ContactDB extends SQLiteOpenHelper {
             contact.setStatus      (res.getInt   (5)); // status
 
             SocialMediaDB smDB = new SocialMediaDB(context);
-            contact.setSocialMedias(smDB.getSocialMediasByUserID(contact.getID()));
+            contact.setSocialMedias(smDB.getSocialMediasByContactID(contact.getID()));
 
             contacts.add(contact);
             res.moveToNext();

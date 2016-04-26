@@ -30,7 +30,9 @@ public class AddContactActivity extends AppCompatActivity {
 
     private ListView listview;
 
-    List<SocialMedia> socialMedias = new ArrayList<>();
+    private List<SocialMedia> socialMedias = new ArrayList<>();
+
+    private boolean isUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +42,31 @@ public class AddContactActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.social_medias_list_view);
         MediaArrayAdapter adapter = new MediaArrayAdapter(this, new ArrayList<SocialMedia>(), R.layout.row_add_media);
         listview.setAdapter(adapter);
+
+        if (getIntent().hasExtra("contact")) {
+            isUpdate = true;
+            pupulateFields((ContactImpl) getIntent().getSerializableExtra("contact"));
+        }
+    }
+
+    private void pupulateFields(Contact contact) {
+        ((EditText)findViewById(R.id.contact_name)).setText(contact.getName());
+        ((EditText)findViewById(R.id.phone_number)).setText(contact.getPhone());
+        ((EditText)findViewById(R.id.email)).setText(contact.getEmail());
+
+        for (SocialMedia sm : contact.getSocialMedias())
+            addMedia(sm.getMediaID());
+
+        ListView lvMedias = (ListView) findViewById(R.id.social_medias_list_view);
+        for (int i = 0; i < lvMedias.getAdapter().getCount(); i++) {
+            List<View> views  = lvMedias.getTouchables();
+//            TODO: fix here
+//            ((EditText) views.get(i+i+1)).setText(contact.getSocialMedias().get(i).getUserID());
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add_contact, menu);
         return true;
     }
@@ -133,8 +155,6 @@ public class AddContactActivity extends AppCompatActivity {
 
         for (int i = 0; i < lvMedias.getAdapter().getCount(); i++) {
             EditText etMediaID2  = (EditText) lvMedias.getAdapter().getView(1, findViewById(R.id.social_medias_list_view), null).findViewById(R.id.user_id);
-            AppCompatEditText asd = (AppCompatEditText) etMediaID2;
-            String ms = asd.getText().toString();
 
             List<View> views  = lvMedias.getTouchables();
             String userID = ((EditText) views.get(i+i+1)).getText().toString();

@@ -1,5 +1,7 @@
 package com.numbrcase.model;
 
+import com.numbrcase.common.SocialMediaIDs;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,19 @@ public class ContactImpl implements Contact {
 
     private List<SocialMedia> socialMedias = new ArrayList<>();
 
+    /*
+     * Default values for a contact
+     */
     public ContactImpl() {
+        this.name = "User";
+        this.phone = "000 000 0000";
+        this.email = "numbrcase@email.com";
+        this.status = Contact.ADDED;
 
+        // delete me later
+        SocialMedia sm = new SocialMediaImpl(SocialMediaIDs.INSTAGRAM);
+        sm.setContactID(1);
+        this.socialMedias.add(sm);
     }
 
     public ContactImpl(String name) {

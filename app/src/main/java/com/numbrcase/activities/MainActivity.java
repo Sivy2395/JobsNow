@@ -1,5 +1,6 @@
 package com.numbrcase.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.ListView;
 
 import com.numbrcase.common.SocialMediaIDs;
 import com.numbrcase.dao.ContactDB;
+import com.numbrcase.dao.SocialMediaDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.ContactArrayAdapter;
@@ -68,6 +71,25 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+
+        // Create my own account
+        ContactDB contactDB = new ContactDB(this);
+        if (contactDB.numberOfRows() == 0) {
+            Contact myself = new ContactImpl();
+
+//            Android 6.0 permission manager sucks
+//            TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+//            myself.setPhone(tMgr.getLine1Number());
+
+            // insert my own contact into the database
+            contactDB.insertContact(myself);
+
+            SocialMediaDB smDB = new SocialMediaDB(this);
+            for (SocialMedia sm : myself.getSocialMedias()) {
+                smDB.insertSocialMedia(sm);
+            }
+
+        }
     }
 
     @Override
@@ -214,7 +236,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.account) {
-            // Handle the camera action
+            Intent intent = new Intent(getApplicationContext(), MyAccountActivity.class);
+            Contact myself = new ContactDB(this).getData(1, getApplicationContext());
+
+            intent.putExtra("contact", myself);
+            startActivity(intent);
         } else if (id == R.id.settings) {
 
         } else if (id == R.id.nav_share) {
@@ -222,6 +248,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

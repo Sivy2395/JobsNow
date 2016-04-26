@@ -47,7 +47,7 @@ public class SocialMediaDB extends SQLiteOpenHelper {
     }
 
 
-    public List<SocialMedia> getSocialMediasByUserID(int contactID){
+    public List<SocialMedia> getSocialMediasByContactID(int contactID){
         List<SocialMedia> socialMedias = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
