@@ -25,8 +25,8 @@ public class SocialMediaDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE social_media  ("            +
-        "id                       INTEGER PRIMARY KEY     ," +
+        db.execSQL("CREATE TABLE social_media ("            +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         "social_media_id          INTEGER                 ," +
         "user_id                  TEXT                    ," +
         "contact_id               INTEGER                 ," +
@@ -79,7 +79,6 @@ public class SocialMediaDB extends SQLiteOpenHelper {
         contentValues.put("contact_id"     , socialMedia.getContactID());
 
         long res = db.insert("social_media", null, contentValues);
-        res = res;
         return true;
     }
 
@@ -92,10 +91,10 @@ public class SocialMediaDB extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("contact_id"     , socialMedia.getUserID());
+        contentValues.put("user_id"     , socialMedia.getUserID());
 
-        db.update("social_media", contentValues, "id = ? ", new String[] { Integer.toString(socialMedia.getID()) } );
-        return true;
+        int result = db.update("social_media", contentValues, "id = ? ", new String[] { Integer.toString(socialMedia.getID()) } );
+        return result == 1;
     }
 
 

@@ -38,11 +38,11 @@ public class MediaArrayAdapter extends ArrayAdapter<SocialMedia> {
 
         View rowView = inflater.inflate(layout, parent, false);;
 
+        SocialMedia sm = values.get(position);
+
         switch (layout) {
 
             case R.layout.row_media:
-                SocialMedia sm = values.get(position);
-
                 ((TextView) rowView.findViewById(R.id.media_name)).setText(SocialMediaIDs.getName(sm.getMediaID()));
                 ((TextView) rowView.findViewById(R.id.media_ID))  .setText(sm.getUserID());
                 ((ImageView) rowView.findViewById(R.id.icon))     .setImageResource(sm.getMediaID());
@@ -50,8 +50,8 @@ public class MediaArrayAdapter extends ArrayAdapter<SocialMedia> {
 
             case R.layout.row_add_media:
                 ((ImageView) rowView.findViewById(R.id.social_media_icon)).setImageResource(values.get(position).getMediaID());
+                ((TextView) rowView.findViewById(R.id.user_id)).setText(sm.getUserID());
                 break;
-
         }
 
         return rowView;

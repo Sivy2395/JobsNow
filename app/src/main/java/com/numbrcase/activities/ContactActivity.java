@@ -28,7 +28,6 @@ public class ContactActivity extends AppCompatActivity {
         ContactImpl contact = (ContactImpl) getIntent().getSerializableExtra("contact");
         List<SocialMedia> socialMedias = contact.getSocialMedias();
 
-
         showContactInformation(contact);
         showMediasInformation(socialMedias);
     }

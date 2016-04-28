@@ -1,8 +1,8 @@
 package com.numbrcase.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatEditText;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +34,8 @@ public class AddContactActivity extends AppCompatActivity {
 
     private boolean isUpdate;
 
+    private Contact contact = new ContactImpl();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,24 +47,18 @@ public class AddContactActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra("contact")) {
             isUpdate = true;
-            pupulateFields((ContactImpl) getIntent().getSerializableExtra("contact"));
+            contact = (ContactImpl) getIntent().getSerializableExtra("contact");
+            socialMedias = contact.getSocialMedias();
+            pupulateFields();
         }
     }
 
-    private void pupulateFields(Contact contact) {
+    private void pupulateFields() {
         ((EditText)findViewById(R.id.contact_name)).setText(contact.getName());
         ((EditText)findViewById(R.id.phone_number)).setText(contact.getPhone());
         ((EditText)findViewById(R.id.email)).setText(contact.getEmail());
 
-        for (SocialMedia sm : contact.getSocialMedias())
-            addMedia(sm.getMediaID());
-
-        ListView lvMedias = (ListView) findViewById(R.id.social_medias_list_view);
-        for (int i = 0; i < lvMedias.getAdapter().getCount(); i++) {
-            List<View> views  = lvMedias.getTouchables();
-//            TODO: fix here
-//            ((EditText) views.get(i+i+1)).setText(contact.getSocialMedias().get(i).getUserID());
-        }
+        addSocialMedias();
     }
 
     @Override
@@ -105,20 +101,82 @@ public class AddContactActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                addMedia(item.getItemId());
+                socialMedias.add(new SocialMediaImpl(item.getItemId(), ""));
+                addSocialMedias();
                 return true;
             }
         });
     }
 
 
-    public void addMedia(int socialMediaID) {
-
-        socialMedias.add(new SocialMediaImpl(socialMediaID));
+    public void addSocialMedias() {
         MediaArrayAdapter adapter = new MediaArrayAdapter(this, socialMedias, R.layout.row_add_media);
         listview.setAdapter(adapter);
 
         updateListViewSize(listview);
+    }
+
+    /**
+     * Method called whenever the button "Save" is pressed
+     */
+    public void saveContact(MenuItem item){
+        ContactDB db = new ContactDB(this);
+
+        EditText etName   = (EditText) findViewById(R.id.contact_name);
+        EditText etPhone  = (EditText) findViewById(R.id.phone_number);
+        EditText etEmail  = (EditText) findViewById(R.id.email);
+
+        ListView lvMedias = (ListView) findViewById(R.id.social_medias_list_view);
+
+        for (int i = 0; i < lvMedias.getAdapter().getCount(); i++) {
+
+            List<View> views  = lvMedias.getTouchables();
+            String userID = ((EditText) views.get(i+i+1)).getText().toString();
+
+            // Add only medias with userID setted
+            if (userID.equals(""))
+                continue;
+            else {
+                socialMedias.get(i).setUserID(userID);
+                socialMedias.get(i).setContactID(db.numberOfRows()+1);
+            }
+        }
+
+        contact.setName(etName.getText().toString());
+        contact.setPhone(etPhone.getText().toString());
+        contact.setEmail(etEmail.getText().toString());
+        contact.setRequestPlace("");
+        contact.setStatus(Contact.ADDED);
+        contact.setSocialMedias(socialMedias);
+
+        SocialMediaDB smDB = new SocialMediaDB(this);
+
+        if (isUpdate) {
+            db.updateContact(contact);
+            for (SocialMedia sm : contact.getSocialMedias()) {
+                // If the socialMedia can't be updated, it means the user created a new socialMedia
+                if (smDB.updateSocialMedia(sm) == false)
+                    smDB.insertSocialMedia(sm);
+            }
+
+        }
+
+        else {
+            db.insertContact(contact);
+            for (SocialMedia sm : contact.getSocialMedias())
+                smDB.insertSocialMedia(sm);
+
+        }
+
+        Toast.makeText(this, "Contact Saved", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class)); //Back to MainActivity
+    }
+
+    /**
+     * Method called whenever the button "Cancel" is pressed
+     */
+    public void cancel(MenuItem item){
+        onBackPressed(); //Back to MainActivity
     }
 
 
@@ -141,57 +199,4 @@ public class AddContactActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Method called whenever the button "Save" is pressed
-     */
-    public void saveContact(MenuItem item){
-        ContactDB db = new ContactDB(this);
-
-        EditText etName   = (EditText) findViewById(R.id.contact_name);
-        EditText etPhone  = (EditText) findViewById(R.id.phone_number);
-        EditText etEmail  = (EditText) findViewById(R.id.email);
-
-        ListView lvMedias = (ListView) findViewById(R.id.social_medias_list_view);
-
-        for (int i = 0; i < lvMedias.getAdapter().getCount(); i++) {
-            EditText etMediaID2  = (EditText) lvMedias.getAdapter().getView(1, findViewById(R.id.social_medias_list_view), null).findViewById(R.id.user_id);
-
-            List<View> views  = lvMedias.getTouchables();
-            String userID = ((EditText) views.get(i+i+1)).getText().toString();
-
-            // Add only medias with userID setted
-            if (userID.equals(""))
-                continue;
-            else {
-                socialMedias.get(i).setUserID(userID);
-                socialMedias.get(i).setContactID(db.numberOfRows()+1);
-            }
-        }
-
-        Contact contact = new ContactImpl();
-        contact.setName(etName.getText().toString());
-        contact.setPhone(etPhone.getText().toString());
-        contact.setEmail(etEmail.getText().toString());
-        contact.setRequestPlace("");
-        contact.setStatus(Contact.ADDED);
-        contact.setSocialMedias(socialMedias);
-
-        db.insertContact(contact);
-
-        // Insert Social Medias
-        SocialMediaDB smDB = new SocialMediaDB(this);
-        for (SocialMedia sm : contact.getSocialMedias()) {
-            smDB.insertSocialMedia(sm);
-        }
-
-        Toast.makeText(this, "Contact Saved", Toast.LENGTH_SHORT).show();
-        onBackPressed(); //Back to MainActivity
-    }
-
-    /**
-     * Method called whenever the button "Cancel" is pressed
-     */
-    public void cancel(MenuItem item){
-        onBackPressed(); //Back to MainActivity
-    }
 }

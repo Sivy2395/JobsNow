@@ -33,7 +33,7 @@ public class MyAccountActivity extends AppCompatActivity {
         myself = (Contact) getIntent().getSerializableExtra("contact");
 
         showContactInformation(myself);
-        //showMediasInformation(socialMedias);
+        showMediasInformation(myself.getSocialMedias());
     }
 
     @Override

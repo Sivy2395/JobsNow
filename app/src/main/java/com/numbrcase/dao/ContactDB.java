@@ -26,7 +26,7 @@ public class ContactDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE contact  (" +
-        "contact_id    INTEGER PRIMARY KEY," +
+        "contact_id    INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         "name          TEXT,               " +
         "phone         TEXT,               " +
         "email         TEXT,               " +
@@ -93,7 +93,8 @@ public class ContactDB extends SQLiteOpenHelper {
         contentValues.put("request_place", contact.getRequestPlace());
         contentValues.put("status"       , contact.getStatus());
 
-        db.update("contact", contentValues, "contact_id = ? ", new String[] { Integer.toString(contact.getID()) } );
+        int a = db.update("contact", contentValues, "contact_id = ? ", new String[] { Integer.toString(contact.getID()) } );
+        a = a;
         return true;
     }
 

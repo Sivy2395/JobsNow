@@ -34,9 +34,10 @@ public class SocialMediaImpl implements SocialMedia {
     }
 
     @Override
-    public void setID(int ID) {
+    public void setID(int id) {
         this.id = id;
     }
+
 
     public int getMediaID() {
         return socialMediaID;

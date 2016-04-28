@@ -30,9 +30,12 @@ public class ContactImpl implements Contact {
         this.status = Contact.ADDED;
 
         // delete me later
-        SocialMedia sm = new SocialMediaImpl(SocialMediaIDs.INSTAGRAM);
-        sm.setContactID(1);
-        this.socialMedias.add(sm);
+        SocialMedia sm1 = new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID");
+        SocialMedia sm2 = new SocialMediaImpl(SocialMediaIDs.FACEBOOK, "faceID");
+        sm1.setContactID(1);
+        sm2.setContactID(1);
+        this.socialMedias.add(sm1);
+        this.socialMedias.add(sm2);
     }
 
     public ContactImpl(String name) {
