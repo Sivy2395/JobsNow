@@ -17,7 +17,6 @@ public class SocialMediaDB extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "social_media.db";
 
-
     public SocialMediaDB(Context context) {
         super(context, DATABASE_NAME, null, 1);
         this.getWritableDatabase();

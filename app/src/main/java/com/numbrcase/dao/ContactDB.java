@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
+import com.numbrcase.model.SocialMedia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,11 @@ public class ContactDB extends SQLiteOpenHelper {
 
     public static final String CONTACTS_TABLE_NAME   = "contact";
 
+    private Context context;
+
     public ContactDB(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        this.context = context;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class ContactDB extends SQLiteOpenHelper {
     }
 
 
-    public Contact getData(int id, Context context){
+    public Contact getData(int id){
         Contact contact = new ContactImpl();
 
         SQLiteDatabase db = getReadableDatabase();
@@ -55,7 +59,7 @@ public class ContactDB extends SQLiteOpenHelper {
         contact.setRequestPlace(c.getString(4)); // request_place
         contact.setStatus      (c.getInt   (5)); // status
 
-        SocialMediaDB smDB = new SocialMediaDB(context);
+        SocialMediaDB smDB = new SocialMediaDB(this.context);
         contact.setSocialMedias(smDB.getSocialMediasByContactID(contact.getID()));
 
         return contact;
@@ -73,7 +77,14 @@ public class ContactDB extends SQLiteOpenHelper {
         contentValues.put("request_place", contact.getRequestPlace());
         contentValues.put("status"       , contact.getStatus());
 
-        db.insert("contact", null, contentValues);
+        int id = (int) db.insert("contact", null, contentValues);
+
+        // Add Social Medias
+        SocialMediaDB smDB = new SocialMediaDB(context);
+        for (SocialMedia sm : contact.getSocialMedias()) {
+            sm.setContactID(id);
+            smDB.insertSocialMedia(sm);
+        }
 
         return true;
     }
@@ -105,13 +116,13 @@ public class ContactDB extends SQLiteOpenHelper {
     }
 
 
-    public List<Contact> getAllContacts(Context context) {
+    public List<Contact> getAllContactsByStatus(int status) {
 
         List<Contact> contacts = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor res = db.rawQuery( "select * from contact", null );
+        Cursor res = db.rawQuery( "select * from contact where status = " + status, null );
         res.moveToFirst();
 
         while(res.isAfterLast() == false){
@@ -124,7 +135,7 @@ public class ContactDB extends SQLiteOpenHelper {
             contact.setRequestPlace(res.getString(4)); // request_place
             contact.setStatus      (res.getInt   (5)); // status
 
-            SocialMediaDB smDB = new SocialMediaDB(context);
+            SocialMediaDB smDB = new SocialMediaDB(this.context);
             contact.setSocialMedias(smDB.getSocialMediasByContactID(contact.getID()));
 
             contacts.add(contact);

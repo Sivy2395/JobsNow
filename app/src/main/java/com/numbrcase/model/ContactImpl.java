@@ -25,17 +25,12 @@ public class ContactImpl implements Contact {
      */
     public ContactImpl() {
         this.name = "User";
-        this.phone = "000 000 0000";
-        this.email = "numbrcase@email.com";
+        this.phone = "--";
+        this.email = "--";
         this.status = Contact.ADDED;
 
-        // delete me later
-        SocialMedia sm1 = new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID");
-        SocialMedia sm2 = new SocialMediaImpl(SocialMediaIDs.FACEBOOK, "faceID");
-        sm1.setContactID(1);
-        sm2.setContactID(1);
-        this.socialMedias.add(sm1);
-        this.socialMedias.add(sm2);
+        this.socialMedias.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
+        this.socialMedias.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID" ));
     }
 
     public ContactImpl(String name) {

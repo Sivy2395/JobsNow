@@ -95,10 +95,9 @@ public class MyAccountActivity extends AppCompatActivity {
      * Method called whenever the button "Edit" is pressed
      */
     public void editContact(MenuItem item) {
-        //TODO: work here
-//        Intent intent = new Intent(getApplicationContext(), EditMyAccountActivity.class);
-//        intent.putExtra("contact", myself);
-//        startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), EditMyAccountActivity.class);
+        intent.putExtra("contact", myself);
+        startActivity(intent);
     }
 
 }

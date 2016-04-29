@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.numbrcase.common.SocialMediaIDs;
 import com.numbrcase.dao.ContactDB;
-import com.numbrcase.dao.SocialMediaDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.MediaArrayAdapter;
@@ -131,11 +130,7 @@ public class AddContactActivity extends AppCompatActivity {
         contact.setStatus(Contact.ADDED);
         contact.setSocialMedias(socialMedias);
 
-        SocialMediaDB smDB = new SocialMediaDB(this);
-
         db.insertContact(contact);
-        for (SocialMedia sm : contact.getSocialMedias())
-            smDB.insertSocialMedia(sm);
 
         Toast.makeText(this, "Contact Saved", Toast.LENGTH_SHORT).show();
         this.onBackPressed(); //Back to MainActivity

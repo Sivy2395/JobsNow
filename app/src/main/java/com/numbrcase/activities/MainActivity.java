@@ -1,6 +1,5 @@
 package com.numbrcase.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +17,6 @@ import android.widget.ListView;
 
 import com.numbrcase.common.SocialMediaIDs;
 import com.numbrcase.dao.ContactDB;
-import com.numbrcase.dao.SocialMediaDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.ContactArrayAdapter;
@@ -72,24 +69,63 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // Create my own account
+
+        insertMyAccount();
+    }
+
+    /** Insert my own contact into the database */
+    private void insertMyAccount() {
         ContactDB contactDB = new ContactDB(this);
         if (contactDB.numberOfRows() == 0) {
             Contact myself = new ContactImpl();
 
-//            Android 6.0 permission manager sucks
-//            TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-//            myself.setPhone(tMgr.getLine1Number());
+            // Android 6.0 permission manager sucks
+            // TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            // myself.setPhone(tMgr.getLine1Number());
 
-            // insert my own contact into the database
             contactDB.insertContact(myself);
 
-            SocialMediaDB smDB = new SocialMediaDB(this);
-            for (SocialMedia sm : myself.getSocialMedias()) {
-                smDB.insertSocialMedia(sm);
-            }
-
+            // TODO: delete me when the app is released
+            insertContactsForTesting();
         }
+    }
+
+    /** Contacts inserted to test the application */
+    private void insertContactsForTesting() {
+        ContactDB contactDB = new ContactDB(this);
+
+        // ********* REQUESTS ********* //
+        List<SocialMedia> reqSMedias = new ArrayList<>();
+        reqSMedias.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
+        reqSMedias.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
+        reqSMedias.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "linkID"));
+        reqSMedias.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
+
+        List<Contact> reqContacts = new ArrayList<>();
+        reqContacts.add(new ContactImpl("Bill Gates", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1921"));
+        reqContacts.add(new ContactImpl("Muhammad Ali", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1922"));
+        reqContacts.add(new ContactImpl("Charles Darwin", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1923"));
+        reqContacts.add(new ContactImpl("Elvis Presley", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1924"));
+
+        for (Contact c : reqContacts)
+            contactDB.insertContact(c);
+
+        // ********* CONTACTS ********* //
+        List<SocialMedia> contSMedias = new ArrayList<>();
+        contSMedias.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
+        contSMedias.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
+        contSMedias.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
+        contSMedias.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
+
+        List<Contact> myContacts = new ArrayList<>();
+        myContacts.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1921"));
+        myContacts.add(new ContactImpl("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1922"));
+        myContacts.add(new ContactImpl("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1923"));
+        myContacts.add(new ContactImpl("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1924"));
+        myContacts.add(new ContactImpl("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1925"));
+
+        for (Contact c : myContacts)
+            contactDB.insertContact(c);
     }
 
     @Override
@@ -100,23 +136,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void configureRequestListView() {
+        ContactDB contactDB = new ContactDB(this);
 
         requestLV = (ListView) findViewById(R.id.requestlistview);
 
-        List<SocialMedia> sMedias = new ArrayList<>();
-        sMedias.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
-        sMedias.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
-        sMedias.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
-        sMedias.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
+        List<Contact> requests = contactDB.getAllContactsByStatus(Contact.REQUESTED);
 
-        List<Contact> values = new ArrayList<>();
-        values.add(new ContactImpl("Bill Gates", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, sMedias, "+1 773 987 1921"));
-        values.add(new ContactImpl("Muhammad Ali", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, sMedias, "+1 773 987 1922"));
-        values.add(new ContactImpl("Charles Darwin", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, sMedias, "+1 773 987 1923"));
-        values.add(new ContactImpl("Elvis Presley", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, sMedias, "+1 773 987 1924"));
-
-
-        ContactArrayAdapter adapter = new ContactArrayAdapter(this, values, R.layout.row_request);
+        ContactArrayAdapter adapter = new ContactArrayAdapter(this, requests, R.layout.row_request);
 
         requestLV.setAdapter(adapter);
 
@@ -140,28 +166,13 @@ public class MainActivity extends AppCompatActivity
 
 
     private void configureContactListView() {
+        ContactDB contactDB = new ContactDB(this);
 
         contactLV = (ListView) findViewById(R.id.contactlistview);
 
-        List<SocialMedia> sMedias = new ArrayList<>();
-        sMedias.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
-        sMedias.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
-        sMedias.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
-        sMedias.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
+        List<Contact> myContacts = contactDB.getAllContactsByStatus(Contact.ADDED);
 
-        List<Contact> values = new ArrayList<>();
-        values.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1921"));
-        values.add(new ContactImpl("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1922"));
-        values.add(new ContactImpl("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1923"));
-        values.add(new ContactImpl("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1924"));
-        values.add(new ContactImpl("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, sMedias, "+1 773 987 1925"));
-
-        // Get data from database
-        ContactDB contactDB = new ContactDB(this);
-        List<Contact> contacts = contactDB.getAllContacts(getApplicationContext());
-        values.addAll(contacts);
-
-        ContactArrayAdapter adapter = new ContactArrayAdapter(this, values, R.layout.row_contact);
+        ContactArrayAdapter adapter = new ContactArrayAdapter(this, myContacts, R.layout.row_contact);
 
         contactLV.setAdapter(adapter);
 
@@ -237,7 +248,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.account) {
             Intent intent = new Intent(getApplicationContext(), MyAccountActivity.class);
-            Contact myself = new ContactDB(this).getData(1, getApplicationContext());
+            Contact myself = new ContactDB(this).getData(1); // My account is the first row in the db
 
             intent.putExtra("contact", myself);
             startActivity(intent);
@@ -248,7 +259,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
