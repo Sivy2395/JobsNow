@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.numbrcase.dao.ContactDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.MediaArrayAdapter;
 import com.numbrcase.model.SocialMedia;
@@ -20,13 +22,14 @@ import java.util.List;
 
 public class AcceptRequestActivity extends AppCompatActivity {
 
+    private Contact contact;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_request);
-        Contact contact = (Contact) getIntent().getSerializableExtra("contact");
+        contact = (Contact) getIntent().getSerializableExtra("contact");
         List<SocialMedia> socialMedias = contact.getSocialMedias();
-
 
         showContactInformation(contact);
         showMediasInformation(socialMedias);
@@ -78,5 +81,30 @@ public class AcceptRequestActivity extends AppCompatActivity {
         listview.requestLayout();
         listview.setFocusable(false);
     }
+
+    /**
+     * Method called whenever the button "Accept" is pressed
+     */
+    public void acceptRequest(View view) {
+        ContactDB contactDB = new ContactDB(this);
+
+        contact.setStatus(Contact.ADDED);
+        contactDB.updateContact(contact);
+
+        Toast.makeText(this, "Contact Accepted", Toast.LENGTH_SHORT).show();
+        this.onBackPressed(); //Back to MainActivity
+    }
+
+    /**
+     * Method called whenever the button "Deny" is pressed
+     */
+    public void denyRequest(View view) {
+        ContactDB contactDB = new ContactDB(this);
+        contactDB.deleteContact(contact.getID());
+
+        Toast.makeText(this, "Contact Denied", Toast.LENGTH_SHORT).show();
+        this.onBackPressed(); //Back to MainActivity
+    }
+
 
 }

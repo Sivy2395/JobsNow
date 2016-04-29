@@ -97,11 +97,15 @@ public class SocialMediaDB extends SQLiteOpenHelper {
     }
 
 
-    public Integer deleteSocialMedia (Integer id) {
+    public Integer deleteSocialMedia(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete("social_media", "id = ? ", new String[] { Integer.toString(id) });
     }
 
+    public Integer deleteSocialMediaByContactID(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("social_media", "contact_id = ? ", new String[] { Integer.toString(id) });
+    }
 
     public List<String> getAllSocialMedias() {
 

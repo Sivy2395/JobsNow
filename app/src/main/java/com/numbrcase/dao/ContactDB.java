@@ -112,7 +112,12 @@ public class ContactDB extends SQLiteOpenHelper {
 
     public Integer deleteContact (Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("contact", "contact_id = ? ", new String[] { Integer.toString(id) });
+        int result = db.delete("contact", "contact_id = ? ", new String[] { Integer.toString(id) });
+
+        SocialMediaDB smDB = new SocialMediaDB(context);
+        smDB.deleteSocialMediaByContactID(id);
+
+        return result;
     }
 
 

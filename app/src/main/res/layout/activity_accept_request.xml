@@ -72,7 +72,7 @@
                     android:textColor="#008000"
                     android:background="@drawable/botton_color_shape"
                     android:layout_marginRight="25dp"
-                    android:onClick="openSocialMedias"
+                    android:onClick="acceptRequest"
                     />
 
                 <Button
@@ -82,7 +82,7 @@
                     android:layout_centerHorizontal="true"
                     android:textColor="#B20000"
                     android:background="@drawable/botton_color_shape"
-                    android:onClick="openSocialMedias"
+                    android:onClick="denyRequest"
                     />
 
             </LinearLayout>
