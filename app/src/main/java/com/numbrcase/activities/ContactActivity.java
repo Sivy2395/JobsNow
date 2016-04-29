@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.MediaArrayAdapter;
 import com.numbrcase.model.SocialMedia;
@@ -20,19 +23,27 @@ import java.util.List;
 
 public class ContactActivity extends AppCompatActivity {
 
+    private Contact contact;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        ContactImpl contact = (ContactImpl) getIntent().getSerializableExtra("contact");
+        contact = (ContactImpl) getIntent().getSerializableExtra("contact");
         List<SocialMedia> socialMedias = contact.getSocialMedias();
 
         showContactInformation(contact);
         showMediasInformation(socialMedias);
     }
 
-    private void showContactInformation(ContactImpl contact) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_contact, menu);
+        return true;
+    }
+
+    private void showContactInformation(Contact contact) {
         ((TextView)findViewById(R.id.contact_name)).setText(contact.getName());
         ((TextView)findViewById(R.id.phone_number)).setText(contact.getPhone());
     }
@@ -77,6 +88,15 @@ public class ContactActivity extends AppCompatActivity {
         listview.setLayoutParams(params);
         listview.requestLayout();
         listview.setFocusable(false);
+    }
+
+    /**
+     * Method called whenever the button "Edit" is pressed
+     */
+    public void editContact(MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), EditMyAccountActivity.class);
+        intent.putExtra("contact", contact);
+        startActivity(intent);
     }
 
 }

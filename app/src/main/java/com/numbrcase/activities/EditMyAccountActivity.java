@@ -1,5 +1,6 @@
 package com.numbrcase.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,7 +26,7 @@ import com.test_2.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddContactActivity extends AppCompatActivity {
+public class EditMyAccountActivity extends AppCompatActivity {
 
     private ListView listview;
 
@@ -33,19 +34,33 @@ public class AddContactActivity extends AppCompatActivity {
 
     private Contact contact = new ContactImpl();
 
+    private int newMedias;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_contact);
+        setContentView(R.layout.activity_edit_my_account);
 
         listview = (ListView) findViewById(R.id.social_medias_list_view);
         MediaArrayAdapter adapter = new MediaArrayAdapter(this, new ArrayList<SocialMedia>(), R.layout.row_add_media);
         listview.setAdapter(adapter);
+
+        contact = (ContactImpl) getIntent().getSerializableExtra("contact");
+        socialMedias = contact.getSocialMedias();
+        pupulateFields();
+    }
+
+    private void pupulateFields() {
+        ((EditText)findViewById(R.id.contact_name)).setText(contact.getName());
+        ((EditText)findViewById(R.id.phone_number)).setText(contact.getPhone());
+        ((EditText)findViewById(R.id.email)).setText(contact.getEmail());
+
+        addSocialMedias();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_contact, menu);
+        getMenuInflater().inflate(R.menu.menu_edit_my_account, menu);
         return true;
     }
 
@@ -83,7 +98,11 @@ public class AddContactActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                socialMedias.add(new SocialMediaImpl(item.getItemId(), ""));
+                newMedias++;
+                SocialMedia sm = new SocialMediaImpl(item.getItemId(), "");
+                sm.setContactID(contact.getID());
+
+                socialMedias.add(sm);
                 addSocialMedias();
                 return true;
             }
@@ -99,9 +118,9 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
     /**
-     * Method called whenever the button "Save" is pressed
+     * Method called whenever the button "Update" is pressed
      */
-    public void saveContact(MenuItem item){
+    public void updateContact(MenuItem item){
         ContactDB db = new ContactDB(this);
 
         EditText etName   = (EditText) findViewById(R.id.contact_name);
@@ -115,13 +134,8 @@ public class AddContactActivity extends AppCompatActivity {
             List<View> views  = lvMedias.getTouchables();
             String userID = ((EditText) views.get(i+i+1)).getText().toString();
 
-            // Add only medias with userID setted
-            if (userID.equals(""))
-                continue;
-            else {
-                socialMedias.get(i).setUserID(userID);
-                socialMedias.get(i).setContactID(db.numberOfRows()+1);
-            }
+            socialMedias.get(i).setUserID(userID);
+            socialMedias.get(i).setContactID(contact.getID()); //changed
         }
 
         contact.setName(etName.getText().toString());
@@ -131,14 +145,18 @@ public class AddContactActivity extends AppCompatActivity {
         contact.setStatus(Contact.ADDED);
         contact.setSocialMedias(socialMedias);
 
+        db.updateContact(contact);
+
         SocialMediaDB smDB = new SocialMediaDB(this);
+        for (int i = 0; i < contact.getSocialMedias().size() - newMedias; i++)
+            smDB.updateSocialMedia(contact.getSocialMedias().get(i));
 
-        db.insertContact(contact);
-        for (SocialMedia sm : contact.getSocialMedias())
-            smDB.insertSocialMedia(sm);
+        for (int i = contact.getSocialMedias().size() - newMedias; i < contact.getSocialMedias().size(); i++)
+            smDB.insertSocialMedia(contact.getSocialMedias().get(i));
 
-        Toast.makeText(this, "Contact Saved", Toast.LENGTH_SHORT).show();
-        this.onBackPressed(); //Back to MainActivity
+
+        Toast.makeText(this, "Contact Edited", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class)); //Back to MainActivity
     }
 
     /**
