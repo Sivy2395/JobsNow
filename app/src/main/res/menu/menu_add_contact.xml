@@ -4,7 +4,7 @@
 
     <!-- seach view tutorial http://javapapers.com/android/android-searchview-action-bar-tutorial-->
     <item
-        android:id="@+id/menu_cancel"
+        android:id="@+id/menu_search"
         android:title="Cancel"
         android:onClick="cancel"
         app:showAsAction="always"/>

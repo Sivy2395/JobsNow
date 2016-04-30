@@ -1,19 +1,29 @@
 package com.numbrcase.activities;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.numbrcase.common.SocialMediaIDs;
 import com.numbrcase.dao.ContactDB;
@@ -35,6 +45,9 @@ public class MainActivity extends AppCompatActivity
 
     private ListView contactLV;
     private ListView requestLV;
+
+    private final int MY_READ_PHONE_STATE = 1;
+    private final int MY_BLUETOOTH_PERMISSION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,25 +82,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
         insertMyAccount();
     }
 
     /** Insert my own contact into the database */
     private void insertMyAccount() {
         ContactDB contactDB = new ContactDB(this);
-        if (contactDB.numberOfRows() == 0) {
-            Contact myself = new ContactImpl();
-
-            // Android 6.0 permission manager sucks
-            // TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            // myself.setPhone(tMgr.getLine1Number());
-
-            contactDB.insertContact(myself);
-
-            // TODO: delete me when the app is released
-            insertContactsForTesting();
-        }
+        if (contactDB.numberOfRows() == 0)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, MY_READ_PHONE_STATE);
     }
 
     /** Contacts inserted to test the application */
@@ -138,14 +140,11 @@ public class MainActivity extends AppCompatActivity
     private void configureRequestListView() {
         ContactDB contactDB = new ContactDB(this);
 
-        requestLV = (ListView) findViewById(R.id.requestlistview);
-
         List<Contact> requests = contactDB.getAllContactsByStatus(Contact.REQUESTED);
-
         ContactArrayAdapter adapter = new ContactArrayAdapter(this, requests, R.layout.row_request);
 
+        requestLV = (ListView) findViewById(R.id.requestlistview);
         requestLV.setAdapter(adapter);
-
         requestLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -168,14 +167,11 @@ public class MainActivity extends AppCompatActivity
     private void configureContactListView() {
         ContactDB contactDB = new ContactDB(this);
 
-        contactLV = (ListView) findViewById(R.id.contactlistview);
-
         List<Contact> myContacts = contactDB.getAllContactsByStatus(Contact.ADDED);
-
         ContactArrayAdapter adapter = new ContactArrayAdapter(this, myContacts, R.layout.row_contact);
 
+        contactLV = (ListView) findViewById(R.id.contactlistview);
         contactLV.setAdapter(adapter);
-
         contactLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -227,20 +223,19 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        SwitchCompat toggleBluetooth = (SwitchCompat) menu.findItem(R.id.menu_bluetooth).getActionView();
+        toggleBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                bluetoothOnOFF();;
+            }
+        });
+
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -265,4 +260,74 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        boolean permission = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+        switch (requestCode) {
+
+            case MY_READ_PHONE_STATE: {
+                addContacts(permission);
+                return;
+            }
+
+            case MY_BLUETOOTH_PERMISSION: {
+                updateBluetoothToggleButton(permission);
+                return;
+            }
+
+        }
+    }
+
+    private void addContacts(boolean permission){
+        ContactDB contactDB = new ContactDB(this);
+        Contact myself = new ContactImpl();
+
+        if (permission) {
+            TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            myself.setPhone(tMgr.getLine1Number());
+        } else {
+            myself.setPhone("--");
+        }
+
+        contactDB.insertContact(myself);
+        insertContactsForTesting();
+
+        // Update view
+        onStart();
+    }
+
+    // FIXME: For some reason, bluetooth is not requiring user permission to work
+    public void bluetoothOnOFF() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH}, MY_BLUETOOTH_PERMISSION);
+        else
+            updateBluetoothToggleButton(true);
+
+    }
+
+
+    private void updateBluetoothToggleButton(boolean permission) {
+        SwitchCompat toggle = (SwitchCompat) findViewById(R.id.menu_bluetooth);
+
+        if (!permission) {
+            Toast.makeText(this, "Permission not provided", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (toggle.isChecked()) {
+            bluetoothAdapter.enable();
+            Toast.makeText(this, "Bluetooth enabled", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            bluetoothAdapter.disable();
+            Toast.makeText(this, "Bluetooth disabled", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
