@@ -31,11 +31,12 @@ public class ContactDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE contact  (" +
         "contact_id    INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-        "name          TEXT,               " +
-        "phone         TEXT,               " +
-        "email         TEXT,               " +
-        "request_place TEXT,               " +
-        "status        INTEGER            )");
+        "name               TEXT,               " +
+        "phone              TEXT,               " +
+        "email              TEXT,               " +
+        "request_place      TEXT,               " +
+        "status             INTEGER,            " +
+        "profile_pic        BLOB)               ");
     }
 
     @Override
@@ -52,12 +53,13 @@ public class ContactDB extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM contact WHERE contact_id = " + id + ";", null);
 
         c.moveToFirst();
-        contact.setID          (c.getInt   (0)); // contact_id
-        contact.setName        (c.getString(1)); // name
-        contact.setPhone       (c.getString(2)); // phone
-        contact.setEmail       (c.getString(3)); // email
-        contact.setRequestPlace(c.getString(4)); // request_place
-        contact.setStatus      (c.getInt   (5)); // status
+        contact.setID            (c.getInt   (0)); // contact_id
+        contact.setName          (c.getString(1)); // name
+        contact.setPhone         (c.getString(2)); // phone
+        contact.setEmail         (c.getString(3)); // email
+        contact.setRequestPlace  (c.getString(4)); // request_place
+        contact.setStatus        (c.getInt   (5)); // status
+        contact.setProfilePicture(c.getBlob  (6)); // profile_pic
 
         SocialMediaDB smDB = new SocialMediaDB(this.context);
         contact.setSocialMedias(smDB.getSocialMediasByContactID(contact.getID()));
@@ -76,6 +78,7 @@ public class ContactDB extends SQLiteOpenHelper {
         contentValues.put("email"        , contact.getEmail());
         contentValues.put("request_place", contact.getRequestPlace());
         contentValues.put("status"       , contact.getStatus());
+        contentValues.put("profile_pic"  , contact.getProfilePicture());
 
         int id = (int) db.insert("contact", null, contentValues);
 
@@ -103,9 +106,9 @@ public class ContactDB extends SQLiteOpenHelper {
         contentValues.put("email"        , contact.getEmail());
         contentValues.put("request_place", contact.getRequestPlace());
         contentValues.put("status"       , contact.getStatus());
+        contentValues.put("profile_pic"  , contact.getProfilePicture());
 
-        int a = db.update("contact", contentValues, "contact_id = ? ", new String[] { Integer.toString(contact.getID()) } );
-        a = a;
+        db.update("contact", contentValues, "contact_id = ? ", new String[] { Integer.toString(contact.getID()) } );
         return true;
     }
 
@@ -133,12 +136,13 @@ public class ContactDB extends SQLiteOpenHelper {
         while(res.isAfterLast() == false){
             Contact contact = new ContactImpl();
 
-            contact.setID          (res.getInt   (0)); // contact_id
-            contact.setName        (res.getString(1)); // name
-            contact.setPhone       (res.getString(2)); // phone
-            contact.setEmail       (res.getString(3)); // email
-            contact.setRequestPlace(res.getString(4)); // request_place
-            contact.setStatus      (res.getInt   (5)); // status
+            contact.setID            (res.getInt   (0)); // contact_id
+            contact.setName          (res.getString(1)); // name
+            contact.setPhone         (res.getString(2)); // phone
+            contact.setEmail         (res.getString(3)); // email
+            contact.setRequestPlace  (res.getString(4)); // request_place
+            contact.setStatus        (res.getInt   (5)); // status
+            contact.setProfilePicture(res.getBlob  (6)); // profile_pic
 
             SocialMediaDB smDB = new SocialMediaDB(this.context);
             contact.setSocialMedias(smDB.getSocialMediasByContactID(contact.getID()));

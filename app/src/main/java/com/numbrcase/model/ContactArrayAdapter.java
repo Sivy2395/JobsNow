@@ -1,6 +1,7 @@
 package com.numbrcase.model;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,18 +36,20 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View rowView = inflater.inflate(layout, parent, false);;
+        View rowView = inflater.inflate(layout, parent, false);
+
+        byte[] blob = values.get(position).getProfilePicture();
+        if (blob != null)
+            ((ImageView) rowView.findViewById(R.id.icon)).setImageBitmap(BitmapFactory.decodeByteArray(blob, 0, blob.length));
 
         switch (layout) {
 
             case R.layout.row_contact:
                 ((TextView)  rowView.findViewById(R.id.contact_name)).setText(values.get(position).getName());
-                ((ImageView) rowView.findViewById(R.id.icon)        ).setImageResource(R.drawable.ic_menu_camera);
                 break;
 
             case R.layout.row_request:
                 ((TextView) rowView.findViewById(R.id.request_name)).setText(values.get(position).getName());
-                ((ImageView) rowView.findViewById(R.id.icon)).setImageResource(R.drawable.ic_menu_camera);
                 break;
 
         }

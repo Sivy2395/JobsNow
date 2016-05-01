@@ -1,5 +1,7 @@
 package com.numbrcase.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public interface Contact extends Serializable {
 
     public List<SocialMedia> getSocialMedias();
 
+    public byte[] getProfilePicture();
+
 
     /* Set Methods */
     public void setID(int ID);
@@ -35,4 +39,6 @@ public interface Contact extends Serializable {
     public void setStatus(int status);
 
     public void setSocialMedias(List<SocialMedia> socialMedias);
+
+    public void setProfilePicture(byte[] profilePicture);
 }

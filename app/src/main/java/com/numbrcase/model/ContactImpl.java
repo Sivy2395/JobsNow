@@ -1,7 +1,11 @@
 package com.numbrcase.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.numbrcase.common.SocialMediaIDs;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +23,8 @@ public class ContactImpl implements Contact {
     private int status;
 
     private List<SocialMedia> socialMedias = new ArrayList<>();
+
+    private byte[] profilePicture;
 
     /*
      * Default values for a contact
@@ -66,6 +72,15 @@ public class ContactImpl implements Contact {
         this.status = status;
         this.socialMedias = socialMedias;
         this.phone = phone;
+    }
+
+    public ContactImpl(String name, String requestPlace, int status, List<SocialMedia> socialMedias, String phone, byte[] profilePicture) {
+        this.name = name;
+        this.requestPlace = requestPlace;
+        this.status = status;
+        this.socialMedias = socialMedias;
+        this.phone = phone;
+        this.profilePicture = profilePicture;
     }
 
 
@@ -120,8 +135,18 @@ public class ContactImpl implements Contact {
         this.socialMedias = socialMedias;
     }
 
+    @Override
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     public List<SocialMedia> getSocialMedias() {
         return this.socialMedias;
+    }
+
+    @Override
+    public byte[] getProfilePicture() {
+        return profilePicture;
     }
 
     public void addSocialMedia(SocialMediaImpl socialMedia) {

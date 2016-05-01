@@ -1,6 +1,8 @@
 package com.numbrcase.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,6 +50,10 @@ public class MyAccountActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.contact_name)).setText(contact.getName());
         ((TextView)findViewById(R.id.phone_number)).setText(contact.getPhone());
         ((TextView)findViewById(R.id.email)).setText(contact.getEmail());
+
+        byte[] blob = contact.getProfilePicture();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+        ((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(bitmap);
     }
 
     private void showMediasInformation(List<SocialMedia> socialMedias) {

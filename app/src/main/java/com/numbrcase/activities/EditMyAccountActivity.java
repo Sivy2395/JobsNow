@@ -1,6 +1,8 @@
 package com.numbrcase.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -23,6 +26,10 @@ import com.numbrcase.model.SocialMedia;
 import com.numbrcase.model.SocialMediaImpl;
 import com.test_2.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,7 +142,7 @@ public class EditMyAccountActivity extends AppCompatActivity {
             String userID = ((EditText) views.get(i+i+1)).getText().toString();
 
             socialMedias.get(i).setUserID(userID);
-            socialMedias.get(i).setContactID(contact.getID()); //changed
+            socialMedias.get(i).setContactID(contact.getID());
         }
 
         contact.setName(etName.getText().toString());
@@ -183,6 +190,68 @@ public class EditMyAccountActivity extends AppCompatActivity {
         params.height = totalHeight + (listview.getDividerHeight() * (listview.getCount() - 1));
         listview.setLayoutParams(params);
         listview.requestLayout();
+
+    }
+
+    /**
+     * Method called whenever the button "add_photo" is pressed
+     */
+    public void changeProfilePicture(View view) {
+        PopupMenu popup = new PopupMenu(this, view);
+
+        popup.getMenu().add(0, 0, 0, "Choose from Gallery");
+        popup.getMenu().add(0, 1, 1, "Take Phoro");
+
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.social_media_menu, popup.getMenu());
+        popup.show();
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                if (item.getItemId() == 0) {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, 0);
+                }
+                else if (item.getItemId() == 1) {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    cameraIntent.putExtra("aspectX", 1);
+                    cameraIntent.putExtra("aspectY", 1);
+                    cameraIntent.putExtra("scale", true);
+
+                    startActivityForResult(cameraIntent, 1);
+                }
+
+                return true;
+            }
+        });
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data == null)
+            return;
+
+        try {
+
+            InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
+            Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(inputStream), 256, 256, true);
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.WEBP, 75, stream);
+
+            contact.setProfilePicture(stream.toByteArray());
+            ((ImageView)findViewById(R.id.add_photo)).setImageBitmap(bitmap);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 

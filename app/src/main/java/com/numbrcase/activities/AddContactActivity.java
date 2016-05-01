@@ -1,5 +1,7 @@
 package com.numbrcase.activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import com.numbrcase.model.SocialMedia;
 import com.numbrcase.model.SocialMediaImpl;
 import com.test_2.R;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,6 +132,7 @@ public class AddContactActivity extends AppCompatActivity {
         contact.setRequestPlace("");
         contact.setStatus(Contact.ADDED);
         contact.setSocialMedias(socialMedias);
+        contact.setProfilePicture(getProfilePic(R.drawable.pp_1));
 
         db.insertContact(contact);
 
@@ -161,6 +165,17 @@ public class AddContactActivity extends AppCompatActivity {
         listview.setLayoutParams(params);
         listview.requestLayout();
 
+    }
+
+    private byte[] getProfilePic(int drawableID) {
+        Bitmap image = BitmapFactory.decodeResource(getResources(),
+                drawableID);
+
+        // convert bitmap to byte
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.WEBP, 50, stream);
+
+        return stream.toByteArray();
     }
 
 }

@@ -3,15 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="2dp"
-        android:src="@drawable/ic_menu_gallery" >
-    </ImageView>
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageToShow"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBottom="@+id/imgCorners"-->
+            <!--android:layout_alignLeft="@+id/imgCorners"-->
+            <!--android:layout_alignRight="@+id/imgCorners"-->
+            <!--android:layout_alignTop="@+id/imgCorners"-->
+            <!--android:src="@drawable/profile_img"-->
+            <!--android:padding="10dp"-->
+            <!--android:scaleType="centerCrop" />-->
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_alignBottom="@+id/imgCorners"
+            android:layout_alignLeft="@+id/imgCorners"
+            android:layout_alignRight="@+id/imgCorners"
+            android:layout_alignTop="@+id/imgCorners"
+            android:padding="7dp"
+            android:src="@drawable/ic_menu_gallery" >
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/imgCorners"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/bordered_shape" />
+
 
     <TextView
         android:id="@+id/request_name"

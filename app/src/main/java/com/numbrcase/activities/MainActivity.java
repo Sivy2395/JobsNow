@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -34,6 +36,7 @@ import com.numbrcase.model.SocialMedia;
 import com.numbrcase.model.SocialMediaImpl;
 import com.test_2.R;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity
 
     private ListView contactLV;
     private ListView requestLV;
+
 
     private final int MY_READ_PHONE_STATE = 1;
     private final int MY_BLUETOOTH_PERMISSION = 2;
@@ -85,6 +89,21 @@ public class MainActivity extends AppCompatActivity
         insertMyAccount();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+//        if (IS_REQUESTS_UPDATED) {
+            configureRequestListView();
+//            IS_REQUESTS_UPDATED = false;
+//        }
+//        if (IS_CONTACTS_UPDATED) {
+            configureContactListView();
+//            IS_CONTACTS_UPDATED = false;
+//        }
+
+    }
+
     /** Insert my own contact into the database */
     private void insertMyAccount() {
         ContactDB contactDB = new ContactDB(this);
@@ -103,11 +122,12 @@ public class MainActivity extends AppCompatActivity
         reqSMedias.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "linkID"));
         reqSMedias.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
 
+
         List<Contact> reqContacts = new ArrayList<>();
-        reqContacts.add(new ContactImpl("Bill Gates", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1921"));
-        reqContacts.add(new ContactImpl("Muhammad Ali", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1922"));
-        reqContacts.add(new ContactImpl("Charles Darwin", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1923"));
-        reqContacts.add(new ContactImpl("Elvis Presley", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1924"));
+        reqContacts.add(new ContactImpl("Bill Gates", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1921", getProfilePic(R.drawable.pp_2)));
+        reqContacts.add(new ContactImpl("Muhammad Ali", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1922", getProfilePic(R.drawable.pp_3)));
+        reqContacts.add(new ContactImpl("Charles Darwin", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1923", getProfilePic(R.drawable.pp_4)));
+        reqContacts.add(new ContactImpl("Elvis Presley", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1924", getProfilePic(R.drawable.pp_5)));
 
         for (Contact c : reqContacts)
             contactDB.insertContact(c);
@@ -120,21 +140,14 @@ public class MainActivity extends AppCompatActivity
         contSMedias.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
 
         List<Contact> myContacts = new ArrayList<>();
-        myContacts.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1921"));
-        myContacts.add(new ContactImpl("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1922"));
-        myContacts.add(new ContactImpl("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1923"));
-        myContacts.add(new ContactImpl("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1924"));
-        myContacts.add(new ContactImpl("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1925"));
+        myContacts.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1921", getProfilePic(R.drawable.pp_6)));
+        myContacts.add(new ContactImpl("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1922", getProfilePic(R.drawable.pp_7)));
+        myContacts.add(new ContactImpl("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1923", getProfilePic(R.drawable.pp_8)));
+        myContacts.add(new ContactImpl("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1924", getProfilePic(R.drawable.pp_9)));
+        myContacts.add(new ContactImpl("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1925", getProfilePic(R.drawable.pp_10)));
 
         for (Contact c : myContacts)
             contactDB.insertContact(c);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        configureRequestListView();
-        configureContactListView();
     }
 
     private void configureRequestListView() {
@@ -292,6 +305,9 @@ public class MainActivity extends AppCompatActivity
             myself.setPhone("--");
         }
 
+
+        myself.setProfilePicture(getProfilePic(R.drawable.pp_1));
+
         contactDB.insertContact(myself);
         insertContactsForTesting();
 
@@ -330,4 +346,16 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
+
+    private byte[] getProfilePic(int drawableID) {
+        Bitmap image = BitmapFactory.decodeResource(getResources(),
+                drawableID);
+
+        // convert bitmap to byte
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.WEBP, 50, stream);
+
+        return stream.toByteArray();
+    }
+
 }
