@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.R.*;
+
+import com.numbrcase.common.SocialMediaIDs;
 import com.test_2.R;
 
 import java.util.List;
@@ -46,6 +49,7 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 
             case R.layout.row_contact:
                 ((TextView)  rowView.findViewById(R.id.contact_name)).setText(values.get(position).getName());
+                addSocialMediaViews(rowView, position);
                 break;
 
             case R.layout.row_request:
@@ -55,5 +59,30 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
         }
 
         return rowView;
+    }
+
+    private void addSocialMediaViews(View rowView, int position) {
+        int size = values.get(position).getSocialMedias().size();
+        ImageView imageView;
+
+        for (int i = 0; i < size; i++) {
+
+            // More than 3 social media will present the "+" icon
+            if (i > 2) {
+                imageView = (ImageView) rowView.findViewById(R.id.social_img_2);
+                imageView.setImageResource(drawable.ic_menu_add);
+                break;
+            }
+
+            int viewID = rowView.getResources().getIdentifier("social_img_" + i, "id", context.getPackageName());
+            imageView = (ImageView) rowView.findViewById(viewID);
+
+            String drawableName = "circle_" + SocialMediaIDs.getName(values.get(position).getSocialMedias().get(i).getMediaID()).toLowerCase();
+            int drawableID = rowView.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
+            imageView.setImageResource(drawableID);
+
+        }
+
+
     }
 }

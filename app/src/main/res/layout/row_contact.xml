@@ -52,13 +52,20 @@
 
 
         <ImageView
-            android:id="@+id/social_img_1"
+            android:id="@+id/social_img_0"
             android:layout_gravity="right"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:src="@drawable/ic_menu_share" >
+            android:layout_marginRight="4dp">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/social_img_1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp">
         </ImageView>
 
         <ImageView
@@ -66,17 +73,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:src="@drawable/ic_menu_share" >
-        </ImageView>
-
-        <ImageView
-            android:id="@+id/social_img_4"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:src="@android:drawable/ic_menu_add" >
+            android:layout_marginRight="4dp">
         </ImageView>
 
     </LinearLayout>

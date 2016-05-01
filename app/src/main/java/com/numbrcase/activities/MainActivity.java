@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity
         reqSMedias.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "linkID"));
         reqSMedias.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
 
-
         List<Contact> reqContacts = new ArrayList<>();
         reqContacts.add(new ContactImpl("Bill Gates", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1921", getProfilePic(R.drawable.pp_2)));
         reqContacts.add(new ContactImpl("Muhammad Ali", "Requested in Roger Parks, IL on 10/1/2015", Contact.REQUESTED, reqSMedias, "+1 773 987 1922", getProfilePic(R.drawable.pp_3)));
@@ -127,18 +126,30 @@ public class MainActivity extends AppCompatActivity
             contactDB.insertContact(c);
 
         // ********* CONTACTS ********* //
-        List<SocialMedia> contSMedias = new ArrayList<>();
-        contSMedias.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
-        contSMedias.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
-        contSMedias.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
-        contSMedias.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
+        List<SocialMedia> contSMedias1 = new ArrayList<>();
+        contSMedias1.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "twitterID"));
+        contSMedias1.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
+        contSMedias1.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
+        contSMedias1.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
+
+        List<SocialMedia> contSMedias2 = new ArrayList<>();
+        contSMedias2.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
+        contSMedias2.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
+
+        List<SocialMedia> contSMedias3 = new ArrayList<>();
+        contSMedias3.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
+
+        List<SocialMedia> contSMedias4 = new ArrayList<>();
+        contSMedias4.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
+        contSMedias4.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
+        contSMedias4.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
 
         List<Contact> myContacts = new ArrayList<>();
-        myContacts.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1921", getProfilePic(R.drawable.pp_6)));
-        myContacts.add(new ContactImpl("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1922", getProfilePic(R.drawable.pp_7)));
-        myContacts.add(new ContactImpl("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1923", getProfilePic(R.drawable.pp_8)));
-        myContacts.add(new ContactImpl("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1924", getProfilePic(R.drawable.pp_9)));
-        myContacts.add(new ContactImpl("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias, "+1 773 987 1925", getProfilePic(R.drawable.pp_10)));
+        myContacts.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias1, "+1 773 987 1921", getProfilePic(R.drawable.pp_6)));
+        myContacts.add(new ContactImpl("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias4, "+1 773 987 1922", getProfilePic(R.drawable.pp_7)));
+        myContacts.add(new ContactImpl("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias2, "+1 773 987 1923", getProfilePic(R.drawable.pp_8)));
+        myContacts.add(new ContactImpl("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias3, "+1 773 987 1924", getProfilePic(R.drawable.pp_9)));
+        myContacts.add(new ContactImpl("Dalai Lama", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias1, "+1 773 987 1925", getProfilePic(R.drawable.pp_10)));
 
         for (Contact c : myContacts)
             contactDB.insertContact(c);
