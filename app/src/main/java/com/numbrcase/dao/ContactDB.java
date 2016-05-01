@@ -130,7 +130,9 @@ public class ContactDB extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor res = db.rawQuery( "select * from contact where status = " + status, null );
+        Cursor res = db.rawQuery( "select * from contact where status = " + status + " order by name"
+                +" collate nocase;", null );
+
         res.moveToFirst();
 
         while(res.isAfterLast() == false){

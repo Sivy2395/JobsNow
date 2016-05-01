@@ -93,14 +93,8 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-//        if (IS_REQUESTS_UPDATED) {
-            configureRequestListView();
-//            IS_REQUESTS_UPDATED = false;
-//        }
-//        if (IS_CONTACTS_UPDATED) {
-            configureContactListView();
-//            IS_CONTACTS_UPDATED = false;
-//        }
+        configureRequestListView();
+        configureContactListView();
 
     }
 
@@ -181,6 +175,15 @@ public class MainActivity extends AppCompatActivity
         ContactDB contactDB = new ContactDB(this);
 
         List<Contact> myContacts = contactDB.getAllContactsByStatus(Contact.ADDED);
+
+        // Remove the User Account
+        for (Contact c : myContacts) {
+            if (c.getID() == 1) {
+                myContacts.remove(c);
+                break;
+            }
+        }
+
         ContactArrayAdapter adapter = new ContactArrayAdapter(this, myContacts, R.layout.row_contact);
 
         contactLV = (ListView) findViewById(R.id.contactlistview);
