@@ -25,11 +25,12 @@
         <activity android:name="com.numbrcase.activities.ContactActivity" />
         <activity
             android:name="com.numbrcase.activities.AddContactActivity"
+            android:label="Contact"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name="com.numbrcase.activities.SearchNearbyActivity" />
-        <activity android:name="com.numbrcase.activities.AcceptRequestActivity" />
-        <activity android:name="com.numbrcase.activities.MyAccountActivity" />
-        <activity android:name="com.numbrcase.activities.EditMyAccountActivity"></activity>
+        <activity android:name="com.numbrcase.activities.SearchNearbyActivity" android:label="Search Devices"/>
+        <activity android:name="com.numbrcase.activities.AcceptRequestActivity" android:label="Requests"/>
+        <activity android:name="com.numbrcase.activities.MyAccountActivity" android:label="My Account"/>
+        <activity android:name="com.numbrcase.activities.EditMyAccountActivity" android:label="My Account"></activity>
     </application>
 
 </manifest>

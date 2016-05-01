@@ -68,6 +68,7 @@ public class EditMyAccountActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_edit_my_account, menu);
+
         return true;
     }
 
