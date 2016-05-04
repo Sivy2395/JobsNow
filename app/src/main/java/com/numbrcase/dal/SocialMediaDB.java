@@ -1,4 +1,4 @@
-package com.numbrcase.dao;
+package com.numbrcase.dal;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -17,7 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.numbrcase.common.SocialMediaIDs;
-import com.numbrcase.dao.ContactDB;
+import com.numbrcase.dal.ContactDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.MediaArrayAdapter;

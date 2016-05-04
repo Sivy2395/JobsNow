@@ -28,7 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.numbrcase.common.SocialMediaIDs;
-import com.numbrcase.dao.ContactDB;
+import com.numbrcase.dal.ContactDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.ContactArrayAdapter;
@@ -351,11 +351,13 @@ public class MainActivity extends AppCompatActivity
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (toggle.isChecked()) {
-            bluetoothAdapter.enable();
+            if (bluetoothAdapter != null)
+                bluetoothAdapter.enable();
             Toast.makeText(this, "Bluetooth enabled", Toast.LENGTH_SHORT).show();
         }
         else {
-            bluetoothAdapter.disable();
+            if (bluetoothAdapter != null)
+                bluetoothAdapter.disable();
             Toast.makeText(this, "Bluetooth disabled", Toast.LENGTH_SHORT).show();
         }
 

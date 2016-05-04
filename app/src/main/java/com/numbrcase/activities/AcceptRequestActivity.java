@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.numbrcase.dao.ContactDB;
+import com.numbrcase.dal.ContactDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.MediaArrayAdapter;
 import com.numbrcase.model.SocialMedia;

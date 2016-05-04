@@ -17,8 +17,8 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.numbrcase.common.SocialMediaIDs;
-import com.numbrcase.dao.ContactDB;
-import com.numbrcase.dao.SocialMediaDB;
+import com.numbrcase.dal.ContactDB;
+import com.numbrcase.dal.SocialMediaDB;
 import com.numbrcase.model.Contact;
 import com.numbrcase.model.ContactImpl;
 import com.numbrcase.model.MediaArrayAdapter;
@@ -28,7 +28,6 @@ import com.test_2.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.numbrcase.dao;
+package com.numbrcase.dal;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -36,7 +36,7 @@ public class ContactDB extends SQLiteOpenHelper {
         "email              TEXT,               " +
         "request_place      TEXT,               " +
         "status             INTEGER,            " +
-        "profile_pic        BLOB)               ");
+        "profile_pic        BLOB);              ");
     }
 
     @Override
