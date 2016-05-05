@@ -141,11 +141,11 @@ public class MainActivity extends AppCompatActivity
 
         List<SocialMedia> contSMedias4 = new ArrayList<>();
         contSMedias4.add(new SocialMediaImpl(SocialMediaIDs.INSTAGRAM, "instaID"));
-        contSMedias4.add(new SocialMediaImpl(SocialMediaIDs.LINKEDIN , "jpcqseventos"));
+        contSMedias4.add(new SocialMediaImpl(SocialMediaIDs.TWITTER  , "gkthiruvathukal"));
         contSMedias4.add(new SocialMediaImpl(SocialMediaIDs.FACEBOOK , "faceID"));
 
         List<Contact> myContacts = new ArrayList<>();
-        myContacts.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias1, "+1 773 987 1921", getProfilePic(R.drawable.pp_6)));
+        myContacts.add(new ContactImpl("George Thiruvathukal", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias4, "+1 773 987 1921", getProfilePic(R.drawable.pp_6)));
         myContacts.add(new ContactImpl("Albert Einstein", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias4, "+1 773 987 1922", getProfilePic(R.drawable.pp_7)));
         myContacts.add(new ContactImpl("Paul McCartney", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias2, "+1 773 987 1923", getProfilePic(R.drawable.pp_8)));
         myContacts.add(new ContactImpl("Leonardo da Vinci", "Requested in Roger Parks, IL on 10/1/2015", Contact.ADDED, contSMedias3, "+1 773 987 1924", getProfilePic(R.drawable.pp_9)));

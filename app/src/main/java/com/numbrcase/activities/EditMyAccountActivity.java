@@ -162,7 +162,7 @@ public class EditMyAccountActivity extends AppCompatActivity {
             smDB.insertSocialMedia(contact.getSocialMedias().get(i));
 
 
-        Toast.makeText(this, "Contact Edited", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Account Edited", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(getApplicationContext(), MainActivity.class)); //Back to MainActivity
     }
 
@@ -241,7 +241,7 @@ public class EditMyAccountActivity extends AppCompatActivity {
         try {
 
             InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
-            Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(inputStream), 256, 256, true);
+            Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(inputStream), 128, 128, true);
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.WEBP, 75, stream);
